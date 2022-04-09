@@ -1,0 +1,473 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+  <head>
+    <title>Dengue Cases and Climatic drivers on Rio de Janeiro city</title>
+    <meta charset="utf-8" />
+    <meta name="author" content="Rafael Lopes Paixão da Silva" />
+    <meta name="date" content="2022-04-08" />
+    <script src="libs/header-attrs/header-attrs.js"></script>
+    <link href="libs/xaringanExtra-extra-styles/xaringanExtra-extra-styles.css" rel="stylesheet" />
+    <link rel="stylesheet" href="xaringan-themer.css" type="text/css" />
+  </head>
+  <body>
+    <textarea id="source">
+class: center, middle, inverse, title-slide
+
+# Dengue Cases and Climatic drivers on Rio de Janeiro city
+### Rafael Lopes Paixão da Silva
+### IFT, Unesp
+### 2022-04-08
+
+---
+
+layout: true
+
+
+
+
+
+---
+
+class: left
+
+## Find me at
+
+.left-column[
+
+<svg aria-hidden="true" role="img" viewBox="0 0 496 512" style="height:1em;width:0.97em;vertical-align:-0.125em;margin-left:auto;margin-right:auto;font-size:inherit;fill:currentColor;overflow:visible;position:relative;"><path d="M165.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6zm-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3zm44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9zM244.8 8C106.1 8 0 113.3 0 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C428.2 457.8 496 362.9 496 252 496 113.3 383.5 8 244.8 8zM97.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1zm-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7zm32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1zm-11.4-14.7c-1.6 1-1.6 3.6 0 5.9 1.6 2.3 4.3 3.3 5.6 2.3 1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2z"/></svg> GitHub: [https://github.com/rafalopespx/](https://github.com/rafalopespx/)
+
+<svg aria-hidden="true" role="img" viewBox="0 0 576 512" style="height:1em;width:1.12em;vertical-align:-0.125em;margin-left:auto;margin-right:auto;font-size:inherit;fill:currentColor;overflow:visible;position:relative;"><path d="M160 448c-25.6 0-51.2-22.4-64-32-64-44.8-83.2-60.8-96-70.4V480c0 17.67 14.33 32 32 32h256c17.67 0 32-14.33 32-32V345.6c-12.8 9.6-32 25.6-96 70.4-12.8 9.6-38.4 32-64 32zm128-192H32c-17.67 0-32 14.33-32 32v16c25.6 19.2 22.4 19.2 115.2 86.4 9.6 6.4 28.8 25.6 44.8 25.6s35.2-19.2 44.8-22.4c92.8-67.2 89.6-67.2 115.2-86.4V288c0-17.67-14.33-32-32-32zm256-96H224c-17.67 0-32 14.33-32 32v32h96c33.21 0 60.59 25.42 63.71 57.82l.29-.22V416h192c17.67 0 32-14.33 32-32V192c0-17.67-14.33-32-32-32zm-32 128h-64v-64h64v64zm-352-96c0-35.29 28.71-64 64-64h224V32c0-17.67-14.33-32-32-32H96C78.33 0 64 14.33 64 32v192h96v-32z"/></svg> e-Mail: [lopes1313@gmail.com](mailto:lopes1313@gmail.com)
+
+<svg aria-hidden="true" role="img" viewBox="0 0 512 512" style="height:1em;width:1em;vertical-align:-0.125em;margin-left:auto;margin-right:auto;font-size:inherit;fill:currentColor;overflow:visible;position:relative;"><path d="M459.37 151.716c.325 4.548.325 9.097.325 13.645 0 138.72-105.583 298.558-298.558 298.558-59.452 0-114.68-17.219-161.137-47.106 8.447.974 16.568 1.299 25.34 1.299 49.055 0 94.213-16.568 130.274-44.832-46.132-.975-84.792-31.188-98.112-72.772 6.498.974 12.995 1.624 19.818 1.624 9.421 0 18.843-1.3 27.614-3.573-48.081-9.747-84.143-51.98-84.143-102.985v-1.299c13.969 7.797 30.214 12.67 47.431 13.319-28.264-18.843-46.781-51.005-46.781-87.391 0-19.492 5.197-37.36 14.294-52.954 51.655 63.675 129.3 105.258 216.365 109.807-1.624-7.797-2.599-15.918-2.599-24.04 0-57.828 46.782-104.934 104.934-104.934 30.213 0 57.502 12.67 76.67 33.137 23.715-4.548 46.456-13.32 66.599-25.34-7.798 24.366-24.366 44.833-46.132 57.827 21.117-2.273 41.584-8.122 60.426-16.243-14.292 20.791-32.161 39.308-52.628 54.253z"/></svg> Twitter: [@rafalpx](www.twitter.com/rafalpx)
+
+]
+
+.pull-right[
+
+![profile](img/profile_pick.jpeg)
+
+]
+
+---
+
+## About me
+
++ Ph.D. Student in Physics, in the Instituto de Física Teóric - IFT/ UNESP-SP
+
++ I am in the last year of my Ph.D. and planning on defending on end of Abril/beginning of May, 22.
+
++ With a exchange period, in the Barcelona Institute for Global Health, at Barcelona.
+
+---
+
+## Objectives and Questions
+
+**How Temperatures &amp; Total Preciptations affects the counts of Cases due to Dengue in Brazil, during 2010-2019?**
+
+Objectives: 
+
+-1) To quantify causality by *EDM* of t2m and precip and counts of cases due to Dengue
+
+-2) Understand which are the climatic drivers and how much they force on cases
+
+---
+
+## Dengue Disease
+
+-1) vector borne disease, human-mosquito-human cycle
+
+-2) incubation period of four- to six-day and persists until around the time fever abates, which is typically three to seven days, potential of cryptic transmissions
+
+-3) Hyperendemic disease in Brazil, with anual cycles of outbreaks
+
+---
+
+## Data sources and definitions:
+
+- We have the Brazil national database of information system of severe notifications (SINAN), filtered for the cases of Dengue, aggregated by municipality, health regions, states, and/or any aggregation that is more suitable to the amount of cases.
+
+- For the climate variable, we used the gridded daily ECVs taken from reanalysis products (ERA5Land) 
+
+- We did a weighted mean area aggregation over the municipality (health regions, states, etc.) extent area, to create matching time series for each aggregation level.
+
+---
+
+## Characteristics of Dataset
+
+- ~+ 20.9 million of individual cases, with information of Sex, Age, Municipality of Residence, fromm 2000 to 2020
+
+- ~+ 12 millions of individual cases, from 2010, less cases on 2016 to 2018, Zika outbreak
+
+- Sparse data before 2000, due to non obligatory notification
+
+---
+
+&lt;img src="img/dengue_cases_before_2000.png" width="800" style="display: block; margin: auto;" /&gt;
+
+---
+
+
+&lt;img src="img/dengue_cases_after_2000.png" width="800" style="display: block; margin: auto;" /&gt;
+
+---
+
+## Characteristics of Dengue epidemics
+
+- Strong seasonality, right after the rainy season, relation with mosquito life cycle
+
+- Hyperendemicity, huge peaks very narrow
+
+- Before Covid-19 was the major public health problem in Brazil, has a low attack rate
+
+---
+
+&lt;img src="img/map_after_2000_states.png" width="800" style="display: block; margin: auto;" /&gt;
+
+---
+
+## Empirical Dynamic Modelling
+
+Framework to analyse time series seeking for causality between them:
+
+- From the Takens Theorem we can reconstruct any dynamical system by any observation and its delays
+
+---
+
+&lt;img src="img/Takens Theorem.png" width="800" style="display: block; margin: auto;" /&gt;
+
+---
+
+## Empirical Dynamic Modelling
+
+Framework to analyse time series seeking for causality between them:
+
+- From the Takens Theorem we can reconstruct any dynamical system by any observation and its delays
+
+- This reconstruction it is called __Shadow-Manifold__, it maps complete the dynamics into the original Manifold
+
+---
+
+&lt;img src="img/State Space Reconstruction.png" width="800" style="display: block; margin: auto;" /&gt;
+
+---
+
+## Empirical Dynamic Modelling
+
+Framework to analyse time series seeking for causality between them:
+
+- From the Takens Theorem we can reconstruct any dynamical system by any observation and its delays
+
+- This reconstruction it is called __Shadow-Manifold__, it maps complete the dynamics into the original Manifold
+
+- Any two __Shadow-Manifolds__ that maps each other are __Causal__ linked
+
+---
+
+&lt;img src="img/Causality.png" width="800" style="display: block; margin: auto;" /&gt;
+
+---
+
+## Rio de Janeiro
+
+- Pipeline implemented like as in the Laneri et al.
+
+- 1) Extract the seasonality of the drivers, make a distribution of surrogate time series.
+
+  2) Do the CCM with the Original time-series and 500 Surrogates series with the same seasonality pattern
+  
+  3) Repeat for different values of time for predicition `\(tp\)`
+
+  4) Where in the `\(tp\)` the Original is above the 0.95th percentile of the `\(\rho_{CCM}\)` distribution for the 500 Surrogates time-series, it is significant causal relation
+
+  5) Estimate the force of causality for the drivers at the time for prediction with highest `\(\rho_{CCM}\)` by applying S-Map
+
+---
+
+&lt;img src="img/cases_rj.png" width="800" style="display: block; margin: auto;" /&gt;
+
+---
+
+## Extracting seasonality &amp; Surrogate making
+
+The algorithm we use is:
+
+ - Fit a cubic smooth spline to each climate driver, this gives a seasonal component to each driver
+ 
+ - substract this seasonality pattern from the original driver time series
+ 
+ - The residuals are shuffled and on this is added the seasonality pattern
+ 
+ - This new surrogate time series for the climate driver, has the same seasonal pattern but different residuals
+ 
+ - Make 500 of this surrogates series
+
+---
+
+&lt;img src="img/seasonality_temp_mean.png" width="800" style="display: block; margin: auto;" /&gt;
+
+---
+
+&lt;img src="img/seasonality_total_precip_mean.png" width="800" style="display: block; margin: auto;" /&gt;
+
+---
+
+## Surrogating testing
+
+Now we want to find where in the time for prediction `\(tp\)` the original driver is most significant causal:
+
+ - Apply CCM on the 500 surrogates and the Original time series for various `\(tp\)` values
+ 
+ - Where the Original driver time series is above the 95th percentile of the distribution it causally significant
+
+---
+
+&lt;img src="img/boxplot_all_tp_type.png" width="800" style="display: block; margin: auto;" /&gt;
+
+---
+
+&lt;img src="img/boxplot_drivers_tp_sig.png" width="800" style="display: block; margin: auto;" /&gt;
+
+---
+
+## Force of Interaction
+
+With the at the time for prediction where the original driver is causal significant and where it is has the greater `\(\rho\)` we estimate the force of interaction:
+
+ - With the drivers that are most significant and for the `\(tp\)` which is has highest `\(\rho\)` form a dataset
+ 
+ - Using the S-Map algorithm, we estimate the effect of the driver, at the `\(tp\)`, on the time series of Cases
+
+---
+
+## Force of Interaction
+ 
+The S-Map has the following formula, which it is a Singular Value Decomposition (SVD) algorithm:
+
+$$
+`\begin{equation}
+y(t) = \mathbf{C_0} + \sum_{i=1}^{I} \mathbf{C_i}(t) x_i(t),
+\end{equation}`
+$$
+
+Where `\(I\)` is until the drivers we found as significant causal on the Cases time series. We choose the minimum value of Mean Absolute Error (MAE), between predictions and observations given by the S-Map for `\(\theta\)`. Where `\(C_i\)` are weights to pounder how great are the influences of each nearby point on the predicted point.
+
+---
+
+## Theta form
+
+`\(\theta\)` it is the locally weighted kernel to the decay of influence of each point considered into the prediction, with the formula: 
+
+`$$C_i = \exp^{-\theta\frac{\|x(t_k) - x(t)\|}{d}}$$`
+
+If `\(\theta\)` is `\(0\)` or close to `\(0\)` the model understand the influence of each driver as linear, as `\(\theta\)` grows the model gives more non-linearity weight to each of the drivers.
+
+---
+
+&lt;img src="img/theta_min_mae_rmse.png" width="750" style="display: block; margin: auto;" /&gt;
+
+---
+
+## Theta choice
+
+With the value of theta for the minimum on MAE, we can now estimate the forces of interaction, `\(C_i(t)\)` for each drivers ( `\(T_{min}\)`, `\(Precip_{min}\)`, `\(T_{mean}\)` ) on the the effect:
+
+$$
+`\begin{equation}
+\frac{\partial T_{min}(t - 2)}{\partial Cases(t)},
+\frac{\partial T_{mean}(t - 2)}{\partial Cases(t)},
+\frac{\partial Precip_{min}(t - 8 )}{\partial Cases(t)}
+\end{equation}`
+$$
+
+---
+
+&lt;img src="img/effects_all_drivers.png" width="750" style="display: block; margin: auto;" /&gt;
+
+---
+
+&lt;img src="img/ts_colors_week.png" width="750" style="display: block; margin: auto;" /&gt;
+
+---
+
+&lt;img src="img/ts_colors_week_zoom.png" width="750" style="display: block; margin: auto;" /&gt;
+
+
+---
+
+## Conclusion &amp; Interpretation
+
+ * __Minimum Temperature__, __Mean Temperature__ and __Minimum Preciptation__ are climate drivers of Cases at Rio de Janeiro city 
+
+ * __Minimum Temperature__ has an lagged effect on cases of 2 weeks, this is related to shortening of Extrinsic Incubation period, always positive and above suitable temperature for transmission.
+ 
+ * __Mean Temperature__ has no lagged effect on cases, always negative effect, probably related with non suited temperatures for the mosquito, very prolonged extrinsic incubation period as well as prolonged gonotrophic developement.
+
+ * __Minimum Precipation__ has a lagged effect on cases of 1 week, sometimes negative sometimes positive, probably a always present driver factor, but only favoring the transmission on the __Minimum Temperature__ is suited.
+ 
+---
+
+class: middle, center
+
+# Thank You!
+# ¡Gracias!
+# Obrigado!
+
+<svg aria-hidden="true" role="img" viewBox="0 0 496 512" style="height:1em;width:0.97em;vertical-align:-0.125em;margin-left:auto;margin-right:auto;font-size:inherit;fill:currentColor;overflow:visible;position:relative;"><path d="M165.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6zm-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3zm44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9zM244.8 8C106.1 8 0 113.3 0 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C428.2 457.8 496 362.9 496 252 496 113.3 383.5 8 244.8 8zM97.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1zm-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7zm32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1zm-11.4-14.7c-1.6 1-1.6 3.6 0 5.9 1.6 2.3 4.3 3.3 5.6 2.3 1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2z"/></svg> GitHub: [https://github.com/rafalopespx/](https://github.com/rafalopespx/)
+<svg aria-hidden="true" role="img" viewBox="0 0 576 512" style="height:1em;width:1.12em;vertical-align:-0.125em;margin-left:auto;margin-right:auto;font-size:inherit;fill:currentColor;overflow:visible;position:relative;"><path d="M160 448c-25.6 0-51.2-22.4-64-32-64-44.8-83.2-60.8-96-70.4V480c0 17.67 14.33 32 32 32h256c17.67 0 32-14.33 32-32V345.6c-12.8 9.6-32 25.6-96 70.4-12.8 9.6-38.4 32-64 32zm128-192H32c-17.67 0-32 14.33-32 32v16c25.6 19.2 22.4 19.2 115.2 86.4 9.6 6.4 28.8 25.6 44.8 25.6s35.2-19.2 44.8-22.4c92.8-67.2 89.6-67.2 115.2-86.4V288c0-17.67-14.33-32-32-32zm256-96H224c-17.67 0-32 14.33-32 32v32h96c33.21 0 60.59 25.42 63.71 57.82l.29-.22V416h192c17.67 0 32-14.33 32-32V192c0-17.67-14.33-32-32-32zm-32 128h-64v-64h64v64zm-352-96c0-35.29 28.71-64 64-64h224V32c0-17.67-14.33-32-32-32H96C78.33 0 64 14.33 64 32v192h96v-32z"/></svg>  [lopes1313@gmail.com](mailto:lopes1313@gmail.com)
+<svg aria-hidden="true" role="img" viewBox="0 0 512 512" style="height:1em;width:1em;vertical-align:-0.125em;margin-left:auto;margin-right:auto;font-size:inherit;fill:currentColor;overflow:visible;position:relative;"><path d="M459.37 151.716c.325 4.548.325 9.097.325 13.645 0 138.72-105.583 298.558-298.558 298.558-59.452 0-114.68-17.219-161.137-47.106 8.447.974 16.568 1.299 25.34 1.299 49.055 0 94.213-16.568 130.274-44.832-46.132-.975-84.792-31.188-98.112-72.772 6.498.974 12.995 1.624 19.818 1.624 9.421 0 18.843-1.3 27.614-3.573-48.081-9.747-84.143-51.98-84.143-102.985v-1.299c13.969 7.797 30.214 12.67 47.431 13.319-28.264-18.843-46.781-51.005-46.781-87.391 0-19.492 5.197-37.36 14.294-52.954 51.655 63.675 129.3 105.258 216.365 109.807-1.624-7.797-2.599-15.918-2.599-24.04 0-57.828 46.782-104.934 104.934-104.934 30.213 0 57.502 12.67 76.67 33.137 23.715-4.548 46.456-13.32 66.599-25.34-7.798 24.366-24.366 44.833-46.132 57.827 21.117-2.273 41.584-8.122 60.426-16.243-14.292 20.791-32.161 39.308-52.628 54.253z"/></svg> Twitter: [@rafalpx](www.twitter.com/rafalpx)
+
+---
+
+&lt;img src="img/coef_time_series.png" width="750" style="display: block; margin: auto;" /&gt;
+
+    </textarea>
+<style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
+<script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
+<script>var slideshow = remark.create({
+"highlightStyle": "github",
+"highlightLines": true,
+"countIncrementalSlides": false,
+"ratio": "16:9"
+});
+if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
+  window.dispatchEvent(new Event('resize'));
+});
+(function(d) {
+  var s = d.createElement("style"), r = d.querySelector(".remark-slide-scaler");
+  if (!r) return;
+  s.type = "text/css"; s.innerHTML = "@page {size: " + r.style.width + " " + r.style.height +"; }";
+  d.head.appendChild(s);
+})(document);
+
+(function(d) {
+  var el = d.getElementsByClassName("remark-slides-area");
+  if (!el) return;
+  var slide, slides = slideshow.getSlides(), els = el[0].children;
+  for (var i = 1; i < slides.length; i++) {
+    slide = slides[i];
+    if (slide.properties.continued === "true" || slide.properties.count === "false") {
+      els[i - 1].className += ' has-continuation';
+    }
+  }
+  var s = d.createElement("style");
+  s.type = "text/css"; s.innerHTML = "@media print { .has-continuation { display: none; } }";
+  d.head.appendChild(s);
+})(document);
+// delete the temporary CSS (for displaying all slides initially) when the user
+// starts to view slides
+(function() {
+  var deleted = false;
+  slideshow.on('beforeShowSlide', function(slide) {
+    if (deleted) return;
+    var sheets = document.styleSheets, node;
+    for (var i = 0; i < sheets.length; i++) {
+      node = sheets[i].ownerNode;
+      if (node.dataset["target"] !== "print-only") continue;
+      node.parentNode.removeChild(node);
+    }
+    deleted = true;
+  });
+})();
+(function() {
+  "use strict"
+  // Replace <script> tags in slides area to make them executable
+  var scripts = document.querySelectorAll(
+    '.remark-slides-area .remark-slide-container script'
+  );
+  if (!scripts.length) return;
+  for (var i = 0; i < scripts.length; i++) {
+    var s = document.createElement('script');
+    var code = document.createTextNode(scripts[i].textContent);
+    s.appendChild(code);
+    var scriptAttrs = scripts[i].attributes;
+    for (var j = 0; j < scriptAttrs.length; j++) {
+      s.setAttribute(scriptAttrs[j].name, scriptAttrs[j].value);
+    }
+    scripts[i].parentElement.replaceChild(s, scripts[i]);
+  }
+})();
+(function() {
+  var links = document.getElementsByTagName('a');
+  for (var i = 0; i < links.length; i++) {
+    if (/^(https?:)?\/\//.test(links[i].getAttribute('href'))) {
+      links[i].target = '_blank';
+    }
+  }
+})();
+// adds .remark-code-has-line-highlighted class to <pre> parent elements
+// of code chunks containing highlighted lines with class .remark-code-line-highlighted
+(function(d) {
+  const hlines = d.querySelectorAll('.remark-code-line-highlighted');
+  const preParents = [];
+  const findPreParent = function(line, p = 0) {
+    if (p > 1) return null; // traverse up no further than grandparent
+    const el = line.parentElement;
+    return el.tagName === "PRE" ? el : findPreParent(el, ++p);
+  };
+
+  for (let line of hlines) {
+    let pre = findPreParent(line);
+    if (pre && !preParents.includes(pre)) preParents.push(pre);
+  }
+  preParents.forEach(p => p.classList.add("remark-code-has-line-highlighted"));
+})(document);</script>
+<style>
+  .logo {
+    background-image: url(logo-IFT.png);
+    background-size: contain;
+    background-repeat: no-repeat;
+    position: absolute;
+    top: .1em;
+    right: .1em;
+    width: 110px;
+    height: 128px;
+    z-index: 0;
+  }
+</style>
+  
+  <script>
+  document
+.querySelectorAll(
+  '.remark-slide-content' +
+    ':not(.title-slide)' +
+    // add additional classes to exclude here, e.g.
+  // ':not(.inverse)' +
+    ':not(.hide-logo)'
+)
+.forEach(el => {
+  el.innerHTML += '<div class="logo"></div>';
+});
+</script>
+
+<script>
+slideshow._releaseMath = function(el) {
+  var i, text, code, codes = el.getElementsByTagName('code');
+  for (i = 0; i < codes.length;) {
+    code = codes[i];
+    if (code.parentNode.tagName !== 'PRE' && code.childElementCount === 0) {
+      text = code.textContent;
+      if (/^\\\((.|\s)+\\\)$/.test(text) || /^\\\[(.|\s)+\\\]$/.test(text) ||
+          /^\$\$(.|\s)+\$\$$/.test(text) ||
+          /^\\begin\{([^}]+)\}(.|\s)+\\end\{[^}]+\}$/.test(text)) {
+        code.outerHTML = code.innerHTML;  // remove <code></code>
+        continue;
+      }
+    }
+    i++;
+  }
+};
+slideshow._releaseMath(document);
+</script>
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+(function () {
+  var script = document.createElement('script');
+  script.type = 'text/javascript';
+  script.src  = 'https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML';
+  if (location.protocol !== 'file:' && /^https?:/.test(script.src))
+    script.src  = script.src.replace(/^https?:/, '');
+  document.getElementsByTagName('head')[0].appendChild(script);
+})();
+</script>
+  </body>
+</html>
