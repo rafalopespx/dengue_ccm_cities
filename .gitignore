@@ -1,0 +1,12 @@
+## Files to ignored
+.Rproj.user
+.Rhistory
+.RData
+.Ruserdata
+
+## Big csv
+all_final_*
+dengue_cases_2009_2020.csv.xz
+Data/Dengue_data/
+Data/Work_data/
+Outputs/Tables/dengue_cases_after_2001.csv.xz
