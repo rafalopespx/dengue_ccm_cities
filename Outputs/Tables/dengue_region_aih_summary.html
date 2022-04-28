@@ -1,0 +1,583 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<style>body{background-color:white;}</style>
+
+
+</head>
+<body>
+<div id="fsrurkohik" style="overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+  <style>html {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif;
+}
+
+#fsrurkohik .gt_table {
+  display: table;
+  border-collapse: collapse;
+  margin-left: auto;
+  margin-right: auto;
+  color: #333333;
+  font-size: 16px;
+  font-weight: normal;
+  font-style: normal;
+  background-color: #FFFFFF;
+  width: auto;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #A8A8A8;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #A8A8A8;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+}
+
+#fsrurkohik .gt_heading {
+  background-color: #FFFFFF;
+  text-align: center;
+  border-bottom-color: #FFFFFF;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+}
+
+#fsrurkohik .gt_title {
+  color: #333333;
+  font-size: 125%;
+  font-weight: initial;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  border-bottom-color: #FFFFFF;
+  border-bottom-width: 0;
+}
+
+#fsrurkohik .gt_subtitle {
+  color: #333333;
+  font-size: 85%;
+  font-weight: initial;
+  padding-top: 0;
+  padding-bottom: 6px;
+  border-top-color: #FFFFFF;
+  border-top-width: 0;
+}
+
+#fsrurkohik .gt_bottom_border {
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#fsrurkohik .gt_col_headings {
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+}
+
+#fsrurkohik .gt_col_heading {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: normal;
+  text-transform: inherit;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: bottom;
+  padding-top: 5px;
+  padding-bottom: 6px;
+  padding-left: 5px;
+  padding-right: 5px;
+  overflow-x: hidden;
+}
+
+#fsrurkohik .gt_column_spanner_outer {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: normal;
+  text-transform: inherit;
+  padding-top: 0;
+  padding-bottom: 0;
+  padding-left: 4px;
+  padding-right: 4px;
+}
+
+#fsrurkohik .gt_column_spanner_outer:first-child {
+  padding-left: 0;
+}
+
+#fsrurkohik .gt_column_spanner_outer:last-child {
+  padding-right: 0;
+}
+
+#fsrurkohik .gt_column_spanner {
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  vertical-align: bottom;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  overflow-x: hidden;
+  display: inline-block;
+  width: 100%;
+}
+
+#fsrurkohik .gt_group_heading {
+  padding: 8px;
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: middle;
+}
+
+#fsrurkohik .gt_empty_group_heading {
+  padding: 0.5px;
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  vertical-align: middle;
+}
+
+#fsrurkohik .gt_from_md > :first-child {
+  margin-top: 0;
+}
+
+#fsrurkohik .gt_from_md > :last-child {
+  margin-bottom: 0;
+}
+
+#fsrurkohik .gt_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  margin: 10px;
+  border-top-style: solid;
+  border-top-width: 1px;
+  border-top-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: middle;
+  overflow-x: hidden;
+}
+
+#fsrurkohik .gt_stub {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-right-style: solid;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  padding-left: 12px;
+}
+
+#fsrurkohik .gt_summary_row {
+  color: #333333;
+  background-color: #FFFFFF;
+  text-transform: inherit;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#fsrurkohik .gt_first_summary_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+}
+
+#fsrurkohik .gt_grand_summary_row {
+  color: #333333;
+  background-color: #FFFFFF;
+  text-transform: inherit;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#fsrurkohik .gt_first_grand_summary_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-top-style: double;
+  border-top-width: 6px;
+  border-top-color: #D3D3D3;
+}
+
+#fsrurkohik .gt_striped {
+  background-color: rgba(128, 128, 128, 0.05);
+}
+
+#fsrurkohik .gt_table_body {
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#fsrurkohik .gt_footnotes {
+  color: #333333;
+  background-color: #FFFFFF;
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+}
+
+#fsrurkohik .gt_footnote {
+  margin: 0px;
+  font-size: 90%;
+  padding: 4px;
+}
+
+#fsrurkohik .gt_sourcenotes {
+  color: #333333;
+  background-color: #FFFFFF;
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+}
+
+#fsrurkohik .gt_sourcenote {
+  font-size: 90%;
+  padding: 4px;
+}
+
+#fsrurkohik .gt_left {
+  text-align: left;
+}
+
+#fsrurkohik .gt_center {
+  text-align: center;
+}
+
+#fsrurkohik .gt_right {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+#fsrurkohik .gt_font_normal {
+  font-weight: normal;
+}
+
+#fsrurkohik .gt_font_bold {
+  font-weight: bold;
+}
+
+#fsrurkohik .gt_font_italic {
+  font-style: italic;
+}
+
+#fsrurkohik .gt_super {
+  font-size: 65%;
+}
+
+#fsrurkohik .gt_footnote_marks {
+  font-style: italic;
+  font-weight: normal;
+  font-size: 65%;
+}
+</style>
+  <table class="gt_table">
+  <!--/html_preserve--><caption>Table 1. Raw data Dengue Cases, 2000-2020s, by Regions</caption><!--html_preserve-->
+  
+  <thead class="gt_col_headings">
+    <tr>
+      <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1"><strong>Characteristics Variables</strong></th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_center" rowspan="1" colspan="1"><strong>N</strong></th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_center" rowspan="1" colspan="1"><strong>Overall</strong>, N = 20,817,734<sup class="gt_footnote_marks">1</sup></th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_center" rowspan="1" colspan="1"><strong>North</strong>, N = 1,435,638<sup class="gt_footnote_marks">1</sup></th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_center" rowspan="1" colspan="1"><strong>Northeast</strong>, N = 4,682,974<sup class="gt_footnote_marks">1</sup></th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_center" rowspan="1" colspan="1"><strong>Center-West</strong>, N = 2,906,795<sup class="gt_footnote_marks">1</sup></th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_center" rowspan="1" colspan="1"><strong>Southeast</strong>, N = 10,473,779<sup class="gt_footnote_marks">1</sup></th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_center" rowspan="1" colspan="1"><strong>South</strong>, N = 1,318,548<sup class="gt_footnote_marks">1</sup></th>
+    </tr>
+  </thead>
+  <tbody class="gt_table_body">
+    <tr><td class="gt_row gt_left" style="font-weight: bold;">Age</td>
+<td class="gt_row gt_center">20,817,734</td>
+<td class="gt_row gt_center">30 (18, 44)</td>
+<td class="gt_row gt_center">27 (16, 41)</td>
+<td class="gt_row gt_center">27 (15, 42)</td>
+<td class="gt_row gt_center">30 (19, 44)</td>
+<td class="gt_row gt_center">31 (19, 46)</td>
+<td class="gt_row gt_center">30 (18, 46)</td></tr>
+    <tr><td class="gt_row gt_left" style="font-weight: bold;">Age in Categories</td>
+<td class="gt_row gt_center">20,817,734</td>
+<td class="gt_row gt_center"></td>
+<td class="gt_row gt_center"></td>
+<td class="gt_row gt_center"></td>
+<td class="gt_row gt_center"></td>
+<td class="gt_row gt_center"></td>
+<td class="gt_row gt_center"></td></tr>
+    <tr><td class="gt_row gt_left" style="text-align: left; text-indent: 10px;">0-1</td>
+<td class="gt_row gt_center"></td>
+<td class="gt_row gt_center">546,810 (2.6%)</td>
+<td class="gt_row gt_center">45,889 (3.2%)</td>
+<td class="gt_row gt_center">170,485 (3.6%)</td>
+<td class="gt_row gt_center">69,624 (2.4%)</td>
+<td class="gt_row gt_center">224,868 (2.1%)</td>
+<td class="gt_row gt_center">35,944 (2.7%)</td></tr>
+    <tr><td class="gt_row gt_left" style="text-align: left; text-indent: 10px;">1-9</td>
+<td class="gt_row gt_center"></td>
+<td class="gt_row gt_center">1,663,296 (8.0%)</td>
+<td class="gt_row gt_center">141,411 (9.9%)</td>
+<td class="gt_row gt_center">500,818 (11%)</td>
+<td class="gt_row gt_center">206,997 (7.1%)</td>
+<td class="gt_row gt_center">710,052 (6.8%)</td>
+<td class="gt_row gt_center">104,018 (7.9%)</td></tr>
+    <tr><td class="gt_row gt_left" style="text-align: left; text-indent: 10px;">10-17</td>
+<td class="gt_row gt_center"></td>
+<td class="gt_row gt_center">2,853,915 (14%)</td>
+<td class="gt_row gt_center">216,130 (15%)</td>
+<td class="gt_row gt_center">695,894 (15%)</td>
+<td class="gt_row gt_center">386,830 (13%)</td>
+<td class="gt_row gt_center">1,383,186 (13%)</td>
+<td class="gt_row gt_center">171,875 (13%)</td></tr>
+    <tr><td class="gt_row gt_left" style="text-align: left; text-indent: 10px;">18-39</td>
+<td class="gt_row gt_center"></td>
+<td class="gt_row gt_center">9,072,892 (44%)</td>
+<td class="gt_row gt_center">650,790 (45%)</td>
+<td class="gt_row gt_center">2,005,635 (43%)</td>
+<td class="gt_row gt_center">1,305,672 (45%)</td>
+<td class="gt_row gt_center">4,557,637 (44%)</td>
+<td class="gt_row gt_center">553,158 (42%)</td></tr>
+    <tr><td class="gt_row gt_left" style="text-align: left; text-indent: 10px;">40-59</td>
+<td class="gt_row gt_center"></td>
+<td class="gt_row gt_center">4,900,441 (24%)</td>
+<td class="gt_row gt_center">290,967 (20%)</td>
+<td class="gt_row gt_center">954,630 (20%)</td>
+<td class="gt_row gt_center">703,064 (24%)</td>
+<td class="gt_row gt_center">2,626,257 (25%)</td>
+<td class="gt_row gt_center">325,523 (25%)</td></tr>
+    <tr><td class="gt_row gt_left" style="text-align: left; text-indent: 10px;">60-79</td>
+<td class="gt_row gt_center"></td>
+<td class="gt_row gt_center">1,611,111 (7.7%)</td>
+<td class="gt_row gt_center">82,257 (5.7%)</td>
+<td class="gt_row gt_center">315,635 (6.7%)</td>
+<td class="gt_row gt_center">214,039 (7.4%)</td>
+<td class="gt_row gt_center">883,045 (8.4%)</td>
+<td class="gt_row gt_center">116,135 (8.8%)</td></tr>
+    <tr><td class="gt_row gt_left" style="text-align: left; text-indent: 10px;">80+</td>
+<td class="gt_row gt_center"></td>
+<td class="gt_row gt_center">169,269 (0.8%)</td>
+<td class="gt_row gt_center">8,194 (0.6%)</td>
+<td class="gt_row gt_center">39,877 (0.9%)</td>
+<td class="gt_row gt_center">20,569 (0.7%)</td>
+<td class="gt_row gt_center">88,734 (0.8%)</td>
+<td class="gt_row gt_center">11,895 (0.9%)</td></tr>
+    <tr><td class="gt_row gt_left" style="font-weight: bold;">Self-Reported Race</td>
+<td class="gt_row gt_center">13,557,906</td>
+<td class="gt_row gt_center"></td>
+<td class="gt_row gt_center"></td>
+<td class="gt_row gt_center"></td>
+<td class="gt_row gt_center"></td>
+<td class="gt_row gt_center"></td>
+<td class="gt_row gt_center"></td></tr>
+    <tr><td class="gt_row gt_left" style="text-align: left; text-indent: 10px;">Black</td>
+<td class="gt_row gt_center"></td>
+<td class="gt_row gt_center">802,901 (5.9%)</td>
+<td class="gt_row gt_center">51,571 (4.5%)</td>
+<td class="gt_row gt_center">159,079 (5.7%)</td>
+<td class="gt_row gt_center">94,633 (5.0%)</td>
+<td class="gt_row gt_center">448,359 (6.8%)</td>
+<td class="gt_row gt_center">49,259 (4.1%)</td></tr>
+    <tr><td class="gt_row gt_left" style="text-align: left; text-indent: 10px;">Brown</td>
+<td class="gt_row gt_center"></td>
+<td class="gt_row gt_center">158,090 (1.2%)</td>
+<td class="gt_row gt_center">15,558 (1.4%)</td>
+<td class="gt_row gt_center">32,668 (1.2%)</td>
+<td class="gt_row gt_center">29,089 (1.5%)</td>
+<td class="gt_row gt_center">69,952 (1.1%)</td>
+<td class="gt_row gt_center">10,823 (0.9%)</td></tr>
+    <tr><td class="gt_row gt_left" style="text-align: left; text-indent: 10px;">Indigenous</td>
+<td class="gt_row gt_center"></td>
+<td class="gt_row gt_center">53,405 (0.4%)</td>
+<td class="gt_row gt_center">11,647 (1.0%)</td>
+<td class="gt_row gt_center">12,238 (0.4%)</td>
+<td class="gt_row gt_center">11,701 (0.6%)</td>
+<td class="gt_row gt_center">16,203 (0.2%)</td>
+<td class="gt_row gt_center">1,616 (0.1%)</td></tr>
+    <tr><td class="gt_row gt_left" style="text-align: left; text-indent: 10px;">White</td>
+<td class="gt_row gt_center"></td>
+<td class="gt_row gt_center">6,432,602 (47%)</td>
+<td class="gt_row gt_center">207,142 (18%)</td>
+<td class="gt_row gt_center">571,447 (21%)</td>
+<td class="gt_row gt_center">778,506 (41%)</td>
+<td class="gt_row gt_center">3,946,436 (60%)</td>
+<td class="gt_row gt_center">929,071 (77%)</td></tr>
+    <tr><td class="gt_row gt_left" style="text-align: left; text-indent: 10px;">Yellow</td>
+<td class="gt_row gt_center"></td>
+<td class="gt_row gt_center">6,110,908 (45%)</td>
+<td class="gt_row gt_center">851,989 (75%)</td>
+<td class="gt_row gt_center">2,006,989 (72%)</td>
+<td class="gt_row gt_center">974,097 (52%)</td>
+<td class="gt_row gt_center">2,068,260 (32%)</td>
+<td class="gt_row gt_center">209,573 (17%)</td></tr>
+    <tr><td class="gt_row gt_left" style="text-align: left; text-indent: 10px;">(Missing)</td>
+<td class="gt_row gt_center"></td>
+<td class="gt_row gt_center">7,259,828</td>
+<td class="gt_row gt_center">297,731</td>
+<td class="gt_row gt_center">1,900,553</td>
+<td class="gt_row gt_center">1,018,769</td>
+<td class="gt_row gt_center">3,924,569</td>
+<td class="gt_row gt_center">118,206</td></tr>
+    <tr><td class="gt_row gt_left" style="font-weight: bold;">Sexo</td>
+<td class="gt_row gt_center">20,817,734</td>
+<td class="gt_row gt_center"></td>
+<td class="gt_row gt_center"></td>
+<td class="gt_row gt_center"></td>
+<td class="gt_row gt_center"></td>
+<td class="gt_row gt_center"></td>
+<td class="gt_row gt_center"></td></tr>
+    <tr><td class="gt_row gt_left" style="text-align: left; text-indent: 10px;">Female</td>
+<td class="gt_row gt_center"></td>
+<td class="gt_row gt_center">11,487,442 (55%)</td>
+<td class="gt_row gt_center">759,788 (53%)</td>
+<td class="gt_row gt_center">2,681,057 (57%)</td>
+<td class="gt_row gt_center">1,598,949 (55%)</td>
+<td class="gt_row gt_center">5,739,409 (55%)</td>
+<td class="gt_row gt_center">708,239 (54%)</td></tr>
+    <tr><td class="gt_row gt_left" style="text-align: left; text-indent: 10px;">Male</td>
+<td class="gt_row gt_center"></td>
+<td class="gt_row gt_center">9,330,292 (45%)</td>
+<td class="gt_row gt_center">675,850 (47%)</td>
+<td class="gt_row gt_center">2,001,917 (43%)</td>
+<td class="gt_row gt_center">1,307,846 (45%)</td>
+<td class="gt_row gt_center">4,734,370 (45%)</td>
+<td class="gt_row gt_center">610,309 (46%)</td></tr>
+    <tr><td class="gt_row gt_left" style="font-weight: bold;">Delay of Notification</td>
+<td class="gt_row gt_center">20,817,713</td>
+<td class="gt_row gt_center">3.0 (1.0, 6.0)</td>
+<td class="gt_row gt_center">4.0 (2.0, 6.0)</td>
+<td class="gt_row gt_center">3.0 (1.0, 6.0)</td>
+<td class="gt_row gt_center">3.0 (1.0, 6.0)</td>
+<td class="gt_row gt_center">3.0 (1.0, 6.0)</td>
+<td class="gt_row gt_center">3.0 (1.0, 5.0)</td></tr>
+    <tr><td class="gt_row gt_left" style="text-align: left; text-indent: 10px;">(Missing)</td>
+<td class="gt_row gt_center"></td>
+<td class="gt_row gt_center">21</td>
+<td class="gt_row gt_center">0</td>
+<td class="gt_row gt_center">4</td>
+<td class="gt_row gt_center">3</td>
+<td class="gt_row gt_center">12</td>
+<td class="gt_row gt_center">2</td></tr>
+    <tr><td class="gt_row gt_left" style="font-weight: bold;">Outcome</td>
+<td class="gt_row gt_center">15,399,425</td>
+<td class="gt_row gt_center"></td>
+<td class="gt_row gt_center"></td>
+<td class="gt_row gt_center"></td>
+<td class="gt_row gt_center"></td>
+<td class="gt_row gt_center"></td>
+<td class="gt_row gt_center"></td></tr>
+    <tr><td class="gt_row gt_left" style="text-align: left; text-indent: 10px;">Death</td>
+<td class="gt_row gt_center"></td>
+<td class="gt_row gt_center">288,179 (1.9%)</td>
+<td class="gt_row gt_center">25,925 (2.5%)</td>
+<td class="gt_row gt_center">65,016 (2.0%)</td>
+<td class="gt_row gt_center">1,595 (&lt;0.1%)</td>
+<td class="gt_row gt_center">195,258 (2.5%)</td>
+<td class="gt_row gt_center">385 (&lt;0.1%)</td></tr>
+    <tr><td class="gt_row gt_left" style="text-align: left; text-indent: 10px;">Discharged</td>
+<td class="gt_row gt_center"></td>
+<td class="gt_row gt_center">15,111,246 (98%)</td>
+<td class="gt_row gt_center">1,022,609 (98%)</td>
+<td class="gt_row gt_center">3,137,716 (98%)</td>
+<td class="gt_row gt_center">2,104,865 (100%)</td>
+<td class="gt_row gt_center">7,740,156 (98%)</td>
+<td class="gt_row gt_center">1,105,900 (100%)</td></tr>
+    <tr><td class="gt_row gt_left" style="text-align: left; text-indent: 10px;">(Missing)</td>
+<td class="gt_row gt_center"></td>
+<td class="gt_row gt_center">5,418,309</td>
+<td class="gt_row gt_center">387,104</td>
+<td class="gt_row gt_center">1,480,242</td>
+<td class="gt_row gt_center">800,335</td>
+<td class="gt_row gt_center">2,538,365</td>
+<td class="gt_row gt_center">212,263</td></tr>
+  </tbody>
+  
+  <tfoot>
+    <tr class="gt_footnotes">
+      <td colspan="8">
+        <p class="gt_footnote">
+          <sup class="gt_footnote_marks">
+            <em>1</em>
+          </sup>
+           
+          Median (IQR); n (%)
+          <br />
+        </p>
+      </td>
+    </tr>
+  </tfoot>
+</table>
+</div>
+</body>
+</html>
