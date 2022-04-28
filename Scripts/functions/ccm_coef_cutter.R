@@ -1,15 +1,16 @@
-ccm_coef_cutter<-function(driver_surr, original, K){
+ccm_coef_cutter<-function(driver_data, original, K){
 
-
-lag_select<-driver_surr %>% 
+## Selecting from the driver data, only significant for the original time series, 
+lag_select<-driver_data %>% 
   filter(sig == T)%>% 
-  # select(tp, rho)%>% 
+  select(tp, rho, driver)%>%
   group_by(driver) %>% 
   arrange(desc(rho)) %>% 
   slice(1) %>% 
   ungroup() %>% 
   mutate(tp_abs = abs(tp))
 
+## Amount of driver that are significant
 drivers_amount<-length(unique(lag_select$driver))
 
 length_rj<-nrow(original)
@@ -30,11 +31,11 @@ names_driver<-lag_select$driver
 for (i in 1:length(names_driver)) {
   tp_driver<-lag_select$tp[which(lag_select$driver == names_driver[i])]
   
-  start_size<-(max_tp - abs(driver_data$tp))+1
-  end_size<-(length_rj-max_tp)-abs(driver_data$tp)
+  start_size<-(max_tp - abs(tp_driver))+1
+  end_size<-(length_rj-max_tp)-abs(tp_driver)
   driver<-original %>% 
     select(all_of(names_driver[i])) %>% 
-    slice((start_size):(end_size)) %>% 
+    slice((start_size):(end_size))%>% 
     setNames("driver")
   series_cut[,i+1]<-driver$driver
   
@@ -49,5 +50,5 @@ block <- series_cut
 norm_consts <- apply(block, 2, function(x) sd(x))
 block <- as.data.frame(apply(block, 2, function(x) (x-mean(x))/sd(x)))
 
-return(list(Norm_block = block, Series = series_cut))
+return(list(Norm_block = block, Series = series_cut, max_tp = max_tp))
 }

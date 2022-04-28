@@ -14,11 +14,13 @@ source("Scripts/CCM_functions_pipeline/CCMCoefficients.R")
 source("Scripts/CCM_functions_pipeline/CCMSplines.R")
 source("Scripts/CCM_functions_pipeline/make_pred_nozero.R")
 
+theta_find<-vroom("Outputs/Tables/rj/theta_mae_rmse.csv.xz")
+theta_find2<-vroom("../DengueCCM/Outputs/Tables/rj/theta_mae_rmse.csv.xz")
 
 min_mae<-theta_find$mae[which.min(theta_find$mae)]
-theta_min_mae<-theta_find$theta[min_mae]
+theta_min_mae<-theta_find$theta[which.min(theta_find$mae)]
 min_rmse<-theta_find$rmse[which.min(theta_find$rmse)]
-theta_min_rmse<-theta_find$theta[min_rmse]
+theta_min_rmse<-theta_find$theta[which.min(theta_find$rmse)]
 
 theta_min_plot<-theta_find %>% 
   ggplot(aes(x = theta, y = mae, col = "MAE"))+
@@ -46,6 +48,11 @@ theta_opt_mae<-theta_find$theta[which.min(theta_find$mae)]
 theta_opt_rmse<-theta_find$theta[which.min(theta_find$rmse)]
 
 coef_fun<-function(df_N, df, theta, cols, target, max_tp){
+  df_N<-df_N %>% 
+    select(all_of(target), all_of(cols))
+  df<-df %>% 
+    select(all_of(target), all_of(cols))
+  
   coef_series_opt<-block_lnlp(df_N,
                               theta=theta, ## Finding Theta
                               columns = cols,
@@ -59,7 +66,7 @@ coef_fun<-function(df_N, df, theta, cols, target, max_tp){
   drivers_coef_opt<-data.frame(df, 
                                coef_matrix_opt[,3:length(coef_matrix_opt)])%>% 
     setNames(c("Cases", cols, 
-               names(coef_matrix_opt)[3:length(coef_matrix_opt)]))%>% 
+               names(coef_matrix_opt)[3:length(coef_matrix_opt)]))  %>% 
     mutate(date = dengue_t2m_rio$week[(max_tp+1):(length_rj - max_tp)], 
            theta = theta)
   
@@ -67,7 +74,7 @@ coef_fun<-function(df_N, df, theta, cols, target, max_tp){
   
 }
 
-coef_series_opt<-block_lnlp(series_cutted$Norm_block,
+coef_series_opt_mae<-block_lnlp(series_cutted$Norm_block,
                             theta=theta_opt_mae, ## Finding Theta
                             columns = names_smap,
                             target_column = 'cases',
@@ -102,3 +109,5 @@ drivers_coef_opt_rmse<-coef_fun(df_N = series_cutted$Norm_block,
 
 vroom_write(drivers_coef_opt_rmse, 
             file = 'Outputs/Tables/rj/drivers_coef_opt_theta_rmse.csv.xz')
+
+#

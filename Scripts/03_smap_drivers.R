@@ -13,17 +13,30 @@ source("Scripts/CCM_functions_pipeline/SeasonalSplines.R")
 source("Scripts/CCM_functions_pipeline/CCMCoefficients.R")
 source("Scripts/CCM_functions_pipeline/CCMSplines.R")
 source("Scripts/CCM_functions_pipeline/make_pred_nozero.R")
+source("Scripts/functions/ccm_coef_cutter.R")
 
-series_cutted<-ccm_coef_cutter(driver_surr = driver_surr, 
+dengue_t2m_rio<-vroom('Data/dengue_t2m_precip_weelky_rj.csv.xz')
+
+driver_surr<-vroom("Outputs/Tables/rj/driver_surr.csv.xz") %>% 
+  filter(sig == T) %>% 
+  mutate(driver = case_when(driver == "Mean Temperature" ~ "temp_mean", 
+                            driver == "Max. Temperature" ~ "temp_max", 
+                            driver == "Min. Temperature" ~ "temp_min", 
+                            driver == "Mean Precipitation" ~ "total_precip_mean", 
+                            driver == "Max. Precipitation" ~ "total_precip_max", 
+                            driver == "Min. Precipitation" ~ "total_precip_min"))
+
+series_cutted<-ccm_coef_cutter(driver_data = driver_surr, 
                                original = dengue_t2m_rio, 
                                K = 0)
-names_smap<-colnames(series_cutted$Series)[-1]
+names_smap<-colnames(series_cutted$Norm_block)[-1]
 
-theta_vec<-seq(0.1,10, by = .1)
+theta_vec<-seq(1,10, by = .1)
 drivers_coef<-vector("list", length(theta_vec))
 coef_matrix<-vector("list", length = length(theta_vec))
 theta_find<-vector("list", length = length(theta_vec))
-
+max_tp<-series_cutted$max_tp
+length_rj<-nrow(dengue_t2m_rio)
 
 for (i in 1:length(theta_vec)) {
   coef_series<-block_lnlp(series_cutted$Norm_block,
@@ -68,3 +81,5 @@ drivers_coef<-drivers_coef %>%
 
 vroom_write(x = drivers_coef, 
             file = 'Outputs/Tables/rj/drivers_coef.csv.xz')
+
+#
