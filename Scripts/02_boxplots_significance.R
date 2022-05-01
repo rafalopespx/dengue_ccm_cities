@@ -15,7 +15,7 @@ source("Scripts/CCM_functions_pipeline/CCMSplines.R")
 source("Scripts/CCM_functions_pipeline/make_pred_nozero.R")
 
 boxplot_files<-list.files(path = "Outputs/Tables/rj/", pattern = "Boxplot_tp=", full.names = T)
-tp_vec<--c(0:20)
+tp_vec<--c(0:52)
 max_tp_vec<-max(tp_vec)
 
 boxplot_files<-lapply(boxplot_files, function(x){
@@ -154,11 +154,12 @@ boxplot_driver<-driver_surr %>%
   facet_wrap(.~driver_f, scales = "free_y")+
   theme_bw()+
   theme(legend.position = "bottom")+
+  labs(x = "Lag (weeks)", y = expression(paste("Cross-Mapping skill (", rho, ")")))+
   scale_color_manual(values = c("black", "firebrick1"), name = "")
 boxplot_driver
 
 ggsave(boxplot_driver, 
-       filename = "Outputs/Plots/rj/boxplot_drivers_tp_sig.png", 
+       filename = "Outputs/Plots/rj/boxplot_drivers_tp_sig_52_weeks.png", 
        width = 9, 
        height = 7, 
        dpi = 300)

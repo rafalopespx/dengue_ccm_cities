@@ -34,11 +34,49 @@ for (l in 1:500) {
   for (i in 1:6) {
     block_temp[,i]<-slice_sample(seasonaliy_driver[,residuals[i]], n = 523, replace = T)+
       seasonaliy_driver[,seasonals[i]]
+    ## Non-negative condition to precipitation series
+    if(i %in% c(1,2,3)){
+      block_temp[,i]<-if_else(block_temp[,i] < 0, 
+                              abs(block_temp[,2]), 
+                              block_temp[,i])
+    }
   }
   block_temp$surr<-l
+  block_temp$date<-seasonaliy_driver$date
   Surr_df[[l]]<-block_temp
 }
 
 
-Surr_temp_min<-
+Surr_df<-Surr_df |> 
+  bind_rows()
+
+Surr_df |> 
+  filter(surr == 1) |> 
+  ggplot()+
+  geom_line(aes(x = date, y = V3))+
+  geom_line(data = seasonaliy_driver, aes(x = date, y = total_precip_max))
+
+## Saving surrogates time series
+vroom_write(Surr_df, file = "Outputs/Tables/rj/surrogates_time_series.csv.xz")
+
+## Diagnostics
+plot_ts<-function(x, var){
+  x %>% 
+    ggplot(aes(x = date, y = {{var}}))+
+    geom_line()+
+    theme_minimal()+
+    scale_x_date(date_breaks = "3 months", date_labels = "%V/%y")+
+    theme(axis.text.x = element_text(angle = 90))
+}
+
+plot_hist<-function(x, var, bins){
+  x %>% 
+    ggplot(aes(x = {{var}}))+
+    geom_histogram(bins = bins)+
+    theme_minimal()
+}
+
+
+
+
   

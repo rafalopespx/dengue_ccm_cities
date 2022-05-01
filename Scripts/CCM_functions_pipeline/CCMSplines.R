@@ -85,7 +85,8 @@ CCMSplines<-function(OriginalFile='../data/DataMalariaTartagalCCM.csv',
     left_join(Seasonality, by = "doy", suffix = c("", "_seasonality"))
   
   Residuals<-as.data.frame(matrix(NA,NROW(Original),length(Drivers)))
-  RhoSurr<-Surr<-matrix(NA,(NSurr+1),length(Drivers)+1)
+  RhoSurr<-matrix(NA,(NSurr+1),length(Drivers)+1)
+  # Surr<-c()
   signf<-matrix(NA,1,length(Drivers))
   
   # count<-1
@@ -94,7 +95,7 @@ CCMSplines<-function(OriginalFile='../data/DataMalariaTartagalCCM.csv',
     
     ## Assessing the driver
     vars<-residuals_df[grep(DriversNames[j-1], names(residuals_df))]
-    ## Adding the seasonality to the random sampled residuals of the Driver
+    ## subtracting the seasonality to the generate the residuals of the Driver
     Residuals[,j-1]<-(vars[,1]-vars[,2])
     ## Creating objects to keep the Surrogating test
     block_temp<-as.data.frame(matrix(NA,NROW(Original),2))
@@ -107,6 +108,13 @@ CCMSplines<-function(OriginalFile='../data/DataMalariaTartagalCCM.csv',
       ## Target series and random sampled Residual with the seasonality pattern added
       block_temp[,1]<-Target
       block_temp[,2]<-sample(Residuals[,j-1])+vars[,2]
+      
+      ## Non-negative condition to precipitation series
+      if(DriversNames[j-1] %in% c("total_precip_mean", "total_precip_min", "total_precip_max")){
+        block_temp[,2]<-if_else(block_temp[,2] < 0, 
+                                abs(block_temp[,2]), 
+                                block_temp[,2])
+      }
       
       ## Optimal search of E dimension on Surrgate series
       out.temp <- do.call(rbind,lapply(1:MaxE, function(E_i){
@@ -147,8 +155,8 @@ CCMSplines<-function(OriginalFile='../data/DataMalariaTartagalCCM.csv',
       RhoSurr[(i+1),j-1]<-df.out.ccm$`V1:V2`
       RhoSurr[(i+1), 7]<-i
       
-      ## Keeping surrogate series
-      Surr[i, j]<-block_temp[,2]
+      # ## Keeping surrogate series
+      # Surr<-cbind(Surr, block_temp[,2])
       
     } # end loop surrogates
     print(paste0("All surrogates done for ", DriversNames[j-1]))
@@ -212,8 +220,12 @@ CCMSplines<-function(OriginalFile='../data/DataMalariaTartagalCCM.csv',
   vroom_write(RhoSurr,
               paste0('Outputs/Tables/rj/Boxplot_tp=',TimeForPred,'.csv.xz'))
   
-  vroom_write(Surr, 
-              paste0('Outputs/Tables/rj/surrogates_tp=', TimeForPred, '.csv.xz'))
+  # ## Saving Surr
+  # Surr<-as.data.frame(Surr) |> 
+  #   setNames(str_c(DriversNames))
+  # 
+  # vroom_write(Surr, 
+  #             paste0('Outputs/Tables/rj/surrogates_tp=', TimeForPred, '.csv.xz'))
   
   # ## plots
   # png(filename = paste0("Outputs/Plots/rj/boxplot_tp=", -i), width = 9, height = 7, units = "in")
