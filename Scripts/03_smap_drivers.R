@@ -31,7 +31,7 @@ series_cutted<-ccm_coef_cutter(driver_data = driver_surr,
                                K = 0)
 names_smap<-colnames(series_cutted$Norm_block)[-1]
 
-theta_vec<-seq(1,10, by = .1)
+theta_vec<-seq(.1,10, by = .1)
 drivers_coef<-vector("list", length(theta_vec))
 coef_matrix<-vector("list", length = length(theta_vec))
 theta_find<-vector("list", length = length(theta_vec))

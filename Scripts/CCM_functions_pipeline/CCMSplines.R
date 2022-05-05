@@ -19,6 +19,8 @@
 #                               for the original series (first line of spreadsheet).
 CCMSplines<-function(OriginalFile='../data/DataMalariaTartagalCCM.csv',
                      SeasonalityFile='Seasonality_DataMalariaTartagalCCM.csv',
+                     SurrFile='Outputs/Tables/rj/surrogates_time_series_years_shuffle.csv.xz',
+                     residual_shuffle = F,
                      DateCol=1,
                      LibraryCol=2,
                      TimeForPred=1,
@@ -37,6 +39,7 @@ CCMSplines<-function(OriginalFile='../data/DataMalariaTartagalCCM.csv',
   
   Original<-vroom(OriginalFile)
   Seasonality<-vroom(SeasonalityFile)
+  Surr<-vroom(SurrFile)
   AllVariablesNames<-names(Original)
   DriversNames<-AllVariablesNames[-c(DateCol,LibraryCol)]
   Drivers<-seq(1:ncol(Original))[-c(DateCol,LibraryCol)]
@@ -86,7 +89,6 @@ CCMSplines<-function(OriginalFile='../data/DataMalariaTartagalCCM.csv',
   
   Residuals<-as.data.frame(matrix(NA,NROW(Original),length(Drivers)))
   RhoSurr<-matrix(NA,(NSurr+1),length(Drivers)+1)
-  # Surr<-c()
   signf<-matrix(NA,1,length(Drivers))
   
   # count<-1
@@ -105,15 +107,40 @@ CCMSplines<-function(OriginalFile='../data/DataMalariaTartagalCCM.csv',
     ## Looping over the Surrogates series
     for (i in 1:NSurr){
       
-      ## Target series and random sampled Residual with the seasonality pattern added
-      block_temp[,1]<-Target
-      block_temp[,2]<-sample(Residuals[,j-1])+vars[,2]
-      
-      ## Non-negative condition to precipitation series
-      if(DriversNames[j-1] %in% c("total_precip_mean", "total_precip_min", "total_precip_max")){
-        block_temp[,2]<-if_else(block_temp[,2] < 0, 
-                                abs(block_temp[,2]), 
-                                block_temp[,2])
+      if(residual_shuffle){
+        ## Target series and random sampled Residual with the seasonality pattern added
+        block_temp[,1]<-Target
+        block_temp[,2]<-sample(Residuals[,j-1])+vars[,2]
+        
+        ## Non-negative condition to precipitation series
+        if(DriversNames[j-1] %in% c("total_precip_mean", "total_precip_min", "total_precip_max")){
+          block_temp[,2]<-if_else(block_temp[,2] < 0, 
+                                  abs(block_temp[,2]), 
+                                  block_temp[,2])
+        }
+      } else {
+        # ## Yearly shuffle
+        # block_temp[,1]<-Target
+        # years<-list()
+        # rd<-data.frame(year = year(residuals_df$week), 
+        #                residuals = Residuals[,j-1])
+        # for (k in 2010:2019) {
+        #   years[k-2009]<-rd |>
+        #     filter(year == k) |> 
+        #     select(residuals)
+        #   names(years)[k-2009]<-k
+        # }
+        # years<-sample(years)
+        # block_temp[,2]<-c(years[[1]], years[[2]], years[[3]], years[[4]], years[[5]], 
+        #                   years[[6]], years[[7]], years[[8]], years[[9]], years[[10]])+
+        #   vars[,2]
+        # rm(rd,years)
+        # gc()
+        
+        block_temp[,1]<-Target
+        block_temp[,2]<-Surr |> 
+          filter(surr == 1) |> 
+          pull(var = DriversNames[j-1])
       }
       
       ## Optimal search of E dimension on Surrgate series
@@ -218,7 +245,7 @@ CCMSplines<-function(OriginalFile='../data/DataMalariaTartagalCCM.csv',
   
   ## Saving csv
   vroom_write(RhoSurr,
-              paste0('Outputs/Tables/rj/Boxplot_tp=',TimeForPred,'.csv.xz'))
+              paste0('Outputs/Tables/rj/yearly_shuffle_Boxplot_tp=',TimeForPred,'.csv.xz'))
   
   # ## Saving Surr
   # Surr<-as.data.frame(Surr) |> 

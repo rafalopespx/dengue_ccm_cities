@@ -25,9 +25,11 @@ seasonality_rj<-SeasonalSplines(DataFile = 'Data/dengue_t2m_precip_weelky_rj.csv
 
 ccmsplines_rj<-vector("list", 6)
 ## Da pra paralelizar
-for(i in 0:52){
+for(i in 1:52){
   ccmsplines_rj[[i+1]]<-CCMSplines(OriginalFile='Data/dengue_t2m_precip_weelky_rj.csv.xz',
                                    SeasonalityFile='Outputs/Tables/rj/Seasonality_dengue_t2m_precip_weelky_rj.csv.xz',
+                                   SurrFile='Outputs/Tables/rj/surrogates_time_series_years_shuffle.csv.xz',
+                                   residual_shuffle = F,
                                    DateCol=1,
                                    LibraryCol=8,
                                    TimeForPred=-i,
