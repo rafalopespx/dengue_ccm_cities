@@ -139,7 +139,7 @@ CCMSplines<-function(OriginalFile='../data/DataMalariaTartagalCCM.csv',
         
         block_temp[,1]<-Target
         block_temp[,2]<-Surr |> 
-          filter(surr == 1) |> 
+          filter(surr == i) |> 
           pull(var = DriversNames[j-1])
       }
       

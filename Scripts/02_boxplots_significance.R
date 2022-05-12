@@ -14,9 +14,9 @@ source("Scripts/CCM_functions_pipeline/CCMCoefficients.R")
 source("Scripts/CCM_functions_pipeline/CCMSplines.R")
 source("Scripts/CCM_functions_pipeline/make_pred_nozero.R")
 
-boxplot_files<-list.files(path = "Outputs/Tables/rj/", pattern = "Boxplot_tp=", full.names = T)
-tp_vec<--c(0:52)
+boxplot_files<-list.files(path = "Outputs/Tables/rj/", pattern = "yearly_shuffle_Boxplot_tp=", full.names = T)
 max_tp_vec<-max(tp_vec)
+path<-"yearly_shuffle"
 
 boxplot_files<-lapply(boxplot_files, function(x){
   # tp<-str_extract(x, "[.-]\\d+|0")
@@ -30,7 +30,8 @@ boxplot_files<-boxplot_files %>%
   mutate(series = if_else(series != "Original", "Surrogate", series)) %>% 
   arrange(desc(tp))
 
-vroom_write(boxplot_files, file = "Outputs/Tables/rj/rho_values_surr_original_rj.csv")
+vroom_write(boxplot_files, 
+            file = paste0("Outputs/Tables/rj/", path,"_rho_values_surr_original_rj.csv"))
 
 sig_fun<-function(x, alpha){
   (sum(x[1]>x[-1]) / (length(x)-1))>(1-alpha)
@@ -61,6 +62,9 @@ boxplot_df<-boxplot_files %>%
          sig_val = sig_fun_q(rho)) %>% 
   group_by(tp, driver, series, sig) %>% 
   arrange(tp)
+
+## Untill which maximum tp we go
+tp_vec<--c(0:52)
 
 ## by two different df
 surr_stats<-surr_quants<-vector("list", length = length(tp_vec))
@@ -114,14 +118,17 @@ boxplot_driver_surr<-surr_stats %>%
                          levels = c("Max. Temperature", "Mean Temperature", "Min. Temperature", 
                                     "Max. Precipitation", "Mean Precipitation", "Min. Precipitation"))) %>% 
   ggplot()+
-  geom_boxplot(aes(x = tp, y = rho, group = tp, 
+  geom_boxplot(aes(x = tp, 
+                 # ymin = min(rho), ymax = max(rho), 
+                 y = rho, 
+                      group = tp,
                    col = "Surrogate"), 
                outlier.alpha = 0.25)+
-  geom_point(data = driver_stats %>% 
-               mutate(driver_f = factor(driver, 
-                                        levels = c("Max. Temperature", "Mean Temperature", "Min. Temperature", 
-                                                   "Max. Precipitation", "Mean Precipitation", "Min. Precipitation"))), 
-             aes(x = tp, y = rho, col = "Original"), 
+  geom_point(data = driver_stats |> 
+               mutate(driver_f = factor(driver,
+                                        levels = c("Max. Temperature", "Mean Temperature", "Min. Temperature",
+                                                   "Max. Precipitation", "Mean Precipitation", "Min. Precipitation"))),
+             aes(x = tp, y = rho, col = "Original"),
              size = 2, shape = 19)+
   facet_wrap(.~driver_f, scales = "free_y")+
   theme_bw()+
@@ -131,7 +138,7 @@ boxplot_driver_surr<-surr_stats %>%
 boxplot_driver_surr
 
 ggsave(boxplot_driver_surr, 
-       filename = "Outputs/Plots/rj/boxplot_52_weeks_tp_type.png", 
+       filename = paste0("Outputs/Plots/rj/", path, "_boxplot_",abs(min(tp_vec)),"_weeks_tp_type.png"), 
        width = 9, 
        height = 7, 
        dpi = 300)
@@ -141,7 +148,8 @@ driver_surr<-driver_stats %>%
   group_by(tp, driver, series) %>% 
   arrange(tp)
 
-vroom_write(x = driver_surr, file = 'Outputs/Tables/rj/driver_surr.csv.xz')
+vroom_write(x = driver_surr, 
+            file = paste0('Outputs/Tables/rj/', path, '_', abs(min(tp_vec)),'_driver_surr.csv.xz'))
 
 boxplot_driver<-driver_surr %>% 
   mutate(driver_f = factor(driver, 
@@ -159,7 +167,7 @@ boxplot_driver<-driver_surr %>%
 boxplot_driver
 
 ggsave(boxplot_driver, 
-       filename = "Outputs/Plots/rj/boxplot_drivers_tp_sig_52_weeks.png", 
+       filename = paste0('Outputs/Plots/rj/', path, '_boxplot_drivers_tp_sig_',abs(min(tp_vec)),'_weeks.png'), 
        width = 9, 
        height = 7, 
        dpi = 300)

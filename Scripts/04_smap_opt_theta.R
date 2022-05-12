@@ -14,13 +14,16 @@ source("Scripts/CCM_functions_pipeline/CCMCoefficients.R")
 source("Scripts/CCM_functions_pipeline/CCMSplines.R")
 source("Scripts/CCM_functions_pipeline/make_pred_nozero.R")
 
-theta_find<-vroom("Outputs/Tables/rj/theta_mae_rmse.csv.xz")
-theta_find2<-vroom("../DengueCCM/Outputs/Tables/rj/theta_mae_rmse.csv.xz")
+dengue_t2m_rio<-vroom('Data/dengue_t2m_precip_weelky_rj.csv.xz')
+
+tp<-17
+
+theta_find<-vroom(paste0("Outputs/Tables/rj/yealry_shuffle_tp_", tp, "_theta_mae_rmse.csv.xz"))
 
 min_mae<-theta_find$mae[which.min(theta_find$mae)]
 theta_min_mae<-theta_find$theta[which.min(theta_find$mae)]
-min_rmse<-theta_find$rmse[which.min(theta_find$rmse)]
-theta_min_rmse<-theta_find$theta[which.min(theta_find$rmse)]
+# min_rmse<-theta_find$rmse[which.min(theta_find$rmse)]
+# theta_min_rmse<-theta_find$theta[which.min(theta_find$rmse)]
 
 theta_min_plot<-theta_find %>% 
   ggplot(aes(x = theta, y = mae, col = "MAE"))+
@@ -41,11 +44,24 @@ theta_min_plot<-theta_find %>%
   theme(legend.position = "bottom", legend.title = element_blank())
 theta_min_plot
 
-ggsave(filename = 'Outputs/Plots/rj/theta_min_mae_rmse.png', width = 11, height = 9, dpi = 300)
+ggsave(filename = paste0('Outputs/Plots/rj/yearly_shuffle_tp_', tp, '_theta_min_mae_rmse.png'), 
+       width = 11, 
+       height = 9, 
+       dpi = 300)
 
 ### Optimal Theta
 theta_opt_mae<-theta_find$theta[which.min(theta_find$mae)]
-theta_opt_rmse<-theta_find$theta[which.min(theta_find$rmse)]
+# theta_opt_rmse<-theta_find$theta[which.min(theta_find$rmse)]
+
+## Loading Series
+series_cutted<-list()
+
+series_cutted$Norm_block<-vroom(paste0("Outputs/Tables/rj/normlized_series_cut_tp_", tp,".csv.xz"))
+series_cutted$Series<-vroom(paste0("Outputs/Tables/rj/series_cut_tp_", tp, ".csv.xz"))
+
+names_smap<-colnames(series_cutted$Norm_block)[-1]
+max_tp<-49
+length_rj<-nrow(dengue_t2m_rio)
 
 coef_fun<-function(df_N, df, theta, cols, target, max_tp){
   df_N<-df_N %>% 
@@ -54,7 +70,7 @@ coef_fun<-function(df_N, df, theta, cols, target, max_tp){
     select(all_of(target), all_of(cols))
   
   coef_series_opt<-block_lnlp(df_N,
-                              theta=theta, ## Finding Theta
+                              theta=theta, ##Optimal theta
                               columns = cols,
                               target_column = target,
                               method = 's-map',
@@ -98,16 +114,16 @@ drivers_coef_opt_mae<-coef_fun(df_N = series_cutted$Norm_block,
                                max_tp = max_tp)
 
 vroom_write(drivers_coef_opt_mae, 
-            file = 'Outputs/Tables/rj/drivers_coef_opt_theta_mae.csv.xz')
+            file = paste0('Outputs/Tables/rj/yearly_shuffle_drivers_tp_', tp,'_coef_opt_theta_mae.csv.xz'))
 
-drivers_coef_opt_rmse<-coef_fun(df_N = series_cutted$Norm_block, 
-                                df = series_cutted$Series, 
-                                theta = theta_opt_rmse, 
-                                cols = names_smap, 
-                                target = 'cases', 
-                                max_tp = max_tp)
-
-vroom_write(drivers_coef_opt_rmse, 
-            file = 'Outputs/Tables/rj/drivers_coef_opt_theta_rmse.csv.xz')
+# drivers_coef_opt_rmse<-coef_fun(df_N = series_cutted$Norm_block, 
+#                                 df = series_cutted$Series, 
+#                                 theta = theta_opt_rmse, 
+#                                 cols = names_smap, 
+#                                 target = 'cases', 
+#                                 max_tp = max_tp)
+# 
+# vroom_write(drivers_coef_opt_rmse, 
+#             file = 'Outputs/Tables/rj/drivers_coef_opt_theta_rmse.csv.xz')
 
 #
