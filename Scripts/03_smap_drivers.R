@@ -18,6 +18,7 @@ source("Scripts/functions/ccm_coef_cutter.R")
 dengue_t2m_rio<-vroom('Data/dengue_t2m_precip_weelky_rj.csv.xz')
 
 tp<-52
+more_col<-"temp_min"
 
 driver_surr<-vroom(paste0('Outputs/Tables/rj/yearly_shuffle_', tp,'_driver_surr.csv.xz')) %>% 
   filter(sig == T) %>% 
@@ -30,15 +31,23 @@ driver_surr<-vroom(paste0('Outputs/Tables/rj/yearly_shuffle_', tp,'_driver_surr.
 
 series_cutted<-ccm_coef_cutter(driver_data = driver_surr, 
                                original = dengue_t2m_rio, 
-                               # add_col = "temp_min",
+                               add_col = "temp_min",
                                K = 0)
 names_smap<-colnames(series_cutted$Norm_block)[-1]
 
 # Saving series cutted
 vroom_write(series_cutted$Norm_block, 
-            file = paste0("Outputs/Tables/rj/normlized_series_cut_tp_", tp, ".csv.xz"))
+            file = paste0("Outputs/Tables/rj/normlized_series_cut_tp_", 
+                          tp, 
+                          "_add_", 
+                          more_col, 
+                          ".csv.xz"))
 vroom_write(series_cutted$Series, 
-            file = paste0("Outputs/Tables/rj/series_cut_tp_", tp, ".csv.xz"))
+            file = paste0("Outputs/Tables/rj/series_cut_tp_", 
+                          tp, 
+                          "_add_", 
+                          more_col, 
+                          ".csv.xz"))
 
 theta_vec<-seq(.1,10, by = .1)
 drivers_coef<-vector("list", length(theta_vec))
@@ -77,18 +86,30 @@ theta_find<-theta_find %>%
   bind_rows()
 
 vroom_write(x = theta_find, 
-            file = paste0('Outputs/Tables/rj/yealry_shuffle_tp_', tp, '_theta_mae_rmse.csv.xz'))
+            file = paste0('Outputs/Tables/rj/yealry_shuffle_tp_', 
+                          tp, 
+                          "_add_", 
+                          more_col, 
+                          '_theta_mae_rmse.csv.xz'))
 
 coef_matrix<-coef_matrix %>% 
   bind_rows()
 
 vroom_write(x = coef_matrix, 
-            file = paste0('Outputs/Tables/rj/yealry_shuffle_tp_', tp, '_coef_matrix.csv.xz'))
+            file = paste0('Outputs/Tables/rj/yealry_shuffle_tp_', 
+                          tp, 
+                          "_add_", 
+                          more_col, 
+                          '_coef_matrix.csv.xz'))
 
 drivers_coef<-drivers_coef %>% 
   bind_rows()
 
 vroom_write(x = drivers_coef, 
-            file = paste0('Outputs/Tables/rj/yealry_shuffle_tp_', tp, '_drivers_coef.csv.xz'))
+            file = paste0('Outputs/Tables/rj/yealry_shuffle_tp_', 
+                          tp, 
+                          "_add_", 
+                          more_col, 
+                          '_drivers_coef.csv.xz'))
 
 #

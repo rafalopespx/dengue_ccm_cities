@@ -37,7 +37,7 @@ if(!missing(add_col)){
     slice((max_tp+1):(length_rj - max_tp)) |> 
     setNames(c("added_col"))
   
-  series_cut[,4]<-added_column$added_col
+  series_cut[,(drivers_amount+1)]<-added_column$added_col
 }
 
 names_driver<-lag_select$driver
