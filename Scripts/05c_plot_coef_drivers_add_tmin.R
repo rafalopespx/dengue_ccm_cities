@@ -87,7 +87,7 @@ ggsave(filename = "Outputs/Plots/rj/coef_tmin_tp_17_add_tmin.png",
        height = 7, 
        dpi = 300)
 
-patch_precip_tp_17<-(coef_precip_max_tp_17 | coef_precip_min_tp_17 | coef_tmin_tp_17)+
+patch_precip_tp_17<-(coef_precip_max_tp_17)| ( coef_precip_min_tp_17 / coef_tmin_tp_17)+
   plot_layout(guides = "collect")+
   plot_annotation(title = "Force of Interaction", 
                   tag_levels = "a", 
@@ -140,7 +140,7 @@ coef_precip_mean_tp_52<-drivers_coef_opt_52 |>
   coef_plot(xvar = total_precip_mean49, 
             yvar = `∂total_precip_mean49/∂cases`, 
             colors = month(date - 49))+
-  labs(x = "Minimum Preicipitation, lagged 49 weeks", 
+  labs(x = "Mean Preicipitation, lagged 49 weeks", 
        title = "Effects of Mean Precipitation on Cases", 
        subtitle = "by theta for min. MAE")+
   scale_color_fermenter(type = "seq", palette = "PuOr", name = "Month")+

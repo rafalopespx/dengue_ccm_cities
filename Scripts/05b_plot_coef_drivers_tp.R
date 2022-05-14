@@ -23,7 +23,7 @@ drivers_coef_opt_17<-vroom(paste0("Outputs/Tables/rj/yearly_shuffle_drivers_tp_"
 coef_plot<-function(x, xvar, yvar, colors = NULL){
   x %>% 
     ggplot(aes(x = {{xvar}}, y = {{yvar}}, col = {{colors}}))+
-    geom_point()+
+    geom_point(size = 3)+
     geom_rug(sides = "b")+
     theme_bw()
 }
@@ -31,13 +31,15 @@ coef_plot<-function(x, xvar, yvar, colors = NULL){
 ## Coefficients
 ## Until 17 weeks
 coef_precip_max_tp_17<-drivers_coef_opt_17 |> 
+  mutate(month = month(date)) |> 
+  filter(month %in% c(1,2,3,4,5,6)) |> 
   coef_plot(xvar = total_precip_max2, 
             yvar = `∂total_precip_max2/∂cases`, 
-            colors = month(date - 2))+
+            colors = month)+
   labs(x = "Maximum Preicipitation, lagged 2 weeks", 
        title = "Effects of Maximum Precipitation on Cases", 
        subtitle = "by theta for min. MAE")+
-  scale_color_fermenter(type = "seq", palette = "PuOr", name = "Month")+
+  scale_color_fermenter(type = "seq", palette = "RdYlBu", name = "Month")+
   theme(legend.position = "bottom")
 coef_precip_max_tp_17
 
@@ -117,7 +119,7 @@ coef_precip_mean_tp_52<-drivers_coef_opt_52 |>
   coef_plot(xvar = total_precip_mean49, 
             yvar = `∂total_precip_mean49/∂cases`, 
             colors = month(date - 49))+
-  labs(x = "Minimum Preicipitation, lagged 49 weeks", 
+  labs(x = "Mean Preicipitation, lagged 49 weeks", 
        title = "Effects of Mean Precipitation on Cases", 
        subtitle = "by theta for min. MAE")+
   scale_color_fermenter(type = "seq", palette = "PuOr", name = "Month")+
@@ -130,7 +132,7 @@ ggsave(filename = "Outputs/Plots/rj/coef_precip_mean_tp_52.png",
        height = 7, 
        dpi = 300)
 
-patch_precip_tp_52<-(coef_precip_max_tp_52 | coef_precip_min_tp_52 | coef_precip_mean_tp_52)+
+patch_precip_tp_52<-(coef_precip_max_tp_52) |( coef_precip_min_tp_52 / coef_precip_mean_tp_52)+
   plot_layout(guides = "collect")+
   plot_annotation(title = "Force of Interaction", 
                   tag_levels = "a", 

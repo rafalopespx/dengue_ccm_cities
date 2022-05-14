@@ -13,6 +13,7 @@ source("Scripts/CCM_functions_pipeline/SeasonalSplines.R")
 source("Scripts/CCM_functions_pipeline/CCMCoefficients.R")
 source("Scripts/CCM_functions_pipeline/CCMSplines.R")
 source("Scripts/CCM_functions_pipeline/make_pred_nozero.R")
+source("Scripts/functions/coef_smap.R")
 
 dengue_t2m_rio<-vroom('Data/dengue_t2m_precip_weelky_rj.csv.xz')
 
@@ -27,8 +28,6 @@ theta_find<-vroom(paste0("Outputs/Tables/rj/yealry_shuffle_tp_",
 
 min_mae<-theta_find$mae[which.min(theta_find$mae)]
 theta_min_mae<-theta_find$theta[which.min(theta_find$mae)]
-# min_rmse<-theta_find$rmse[which.min(theta_find$rmse)]
-# theta_min_rmse<-theta_find$theta[which.min(theta_find$rmse)]
 
 theta_min_plot<-theta_find %>% 
   ggplot(aes(x = theta, y = mae, col = "MAE"))+
@@ -60,7 +59,6 @@ ggsave(filename = paste0('Outputs/Plots/rj/yearly_shuffle_tp_',
 
 ### Optimal Theta
 theta_opt_mae<-theta_find$theta[which.min(theta_find$mae)]
-# theta_opt_rmse<-theta_find$theta[which.min(theta_find$rmse)]
 
 ## Loading Series
 series_cutted<-list()
@@ -80,68 +78,15 @@ names_smap<-colnames(series_cutted$Norm_block)[-1]
 max_tp<-max(parse_number(names_smap))
 length_rj<-nrow(dengue_t2m_rio)
 
-coef_fun<-function(df_N, df, theta, cols, target, max_tp){
-  df_N<-df_N %>% 
-    select(all_of(target), all_of(cols))
-  df<-df %>% 
-    select(all_of(target), all_of(cols))
-  
-  coef_series_opt<-block_lnlp(df_N,
-                              theta=theta, ##Optimal theta
-                              columns = cols,
-                              target_column = target,
-                              method = 's-map',
-                              tp = 0, 
-                              save_smap_coefficients = T)
-  
-  coef_matrix_opt<-coef_series_opt$smap_coefficients[[1]]
-  
-  drivers_coef_opt<-data.frame(df, 
-                               coef_matrix_opt[,3:length(coef_matrix_opt)])%>% 
-    setNames(c("Cases", cols, 
-               names(coef_matrix_opt)[3:length(coef_matrix_opt)]))  %>% 
-    mutate(date = dengue_t2m_rio$week[(max_tp+1):(length_rj - max_tp)], 
-           theta = theta)
-  
-  return(drivers_coef_opt)
-  
-}
-
-coef_series_opt_mae<-block_lnlp(series_cutted$Norm_block,
-                            theta=theta_opt_mae, ## Finding Theta
-                            columns = names_smap,
-                            target_column = 'cases',
-                            method = 's-map',
-                            tp = 0, 
-                            save_smap_coefficients = T)
-
-series_cutted$Norm_block<-series_cutted$Norm_block |> 
-  mutate(index = row_number()) |> 
-  select(index, everything())
-
-coef_smap_opt_theta<-SMap(dataFrame = series_cutted$Norm_block, 
-                          E = 10, 
-                          theta = theta_opt_mae,
-                          embedded = T,
-                          lib = "1 509",
-                          pred = "1 509",
-                          columns = "cases total_precip_max2 total_precip_min7 temp_min0",
-                          target = "cases")
-
-coef_matrix_opt<-coef_series_opt_mae$smap_coefficients[[1]]
-
-drivers_coef_opt<-data.frame(series_cutted$Series, coef_matrix_opt[,3:length(coef_matrix_opt)])%>% 
-  setNames(c("Cases", names_smap, 
-             names(coef_matrix_opt)[3:length(coef_matrix_opt)]))%>% 
-  mutate(date = dengue_t2m_rio$week[(max_tp+1):(length_rj - max_tp)], 
-         theta = theta_opt_mae)
-
 drivers_coef_opt_mae<-coef_fun(df_N = series_cutted$Norm_block, 
-                               df = series_cutted$Series, 
-                               theta = theta_opt_mae, 
-                               cols = names_smap, 
-                               target = 'cases', 
-                               max_tp = max_tp)
+                              df = series_cutted$Series, 
+                              theta = theta_min_mae, 
+                              cols = names_smap, 
+                              target = 'cases', 
+                              max_tp = max_tp, 
+                              via = "smap", 
+                              cutoff = length_rj)
+
 
 vroom_write(drivers_coef_opt_mae, 
             file = paste0('Outputs/Tables/rj/yearly_shuffle_drivers_tp_', 
