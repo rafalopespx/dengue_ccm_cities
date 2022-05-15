@@ -39,11 +39,11 @@ coef_plot<-function(x, xvar, yvar, colors = NULL){
 coef_precip_max_tp_17<-drivers_coef_opt_17 |> 
   coef_plot(xvar = total_precip_max2, 
             yvar = `∂total_precip_max2/∂cases`, 
-            colors = factor(as.yearqtr(date)))+
+            colors = quarter(date, with_year = F))+
   labs(x = "Maximum Preicipitation, lagged 2 weeks", 
        title = "Effects of Maximum Precipitation on Cases", 
        subtitle = "by theta for min. MAE")+
-  scale_color_brewer(type = "seq", palette = "PuOr", name = "Month")+
+  scale_color_fermenter(type = "seq", palette = "PuOr", name = "Month")+
   theme(legend.position = "bottom")
 coef_precip_max_tp_17
 
