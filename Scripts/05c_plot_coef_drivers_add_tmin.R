@@ -11,19 +11,19 @@ if(!require(rEDM)){install.packages("rEDM"); library(rEDM)}
 if(!require(ggExtra)){install.packages("ggExtra"); library(ggExtra)}
 if(!require(patchwork)){install.packages("patchwork"); library(patchwork)}
 
-more_col<-"temp_min"
+# more_col<-"temp_min"
 
 ## Laoding drivers optimal csv
 drivers_coef_opt_52<-vroom(paste0("Outputs/Tables/rj/yearly_shuffle_drivers_tp_", 
                                   52,
-                                  "_add_", 
-                                  more_col, 
+                                  # "_add_", 
+                                  # more_col, 
                                   "_coef_opt_theta_mae.csv.xz"))
 
 drivers_coef_opt_17<-vroom(paste0("Outputs/Tables/rj/yearly_shuffle_drivers_tp_", 
                                   17,
-                                  "_add_", 
-                                  more_col,
+                                  # "_add_", 
+                                  # more_col,
                                   "_coef_opt_theta_mae.csv.xz"))
 
 coef_plot<-function(x, xvar, yvar, colors = NULL){
@@ -39,11 +39,11 @@ coef_plot<-function(x, xvar, yvar, colors = NULL){
 coef_precip_max_tp_17<-drivers_coef_opt_17 |> 
   coef_plot(xvar = total_precip_max2, 
             yvar = `∂total_precip_max2/∂cases`, 
-            colors = month(date - 2))+
+            colors = factor(as.yearqtr(date)))+
   labs(x = "Maximum Preicipitation, lagged 2 weeks", 
        title = "Effects of Maximum Precipitation on Cases", 
        subtitle = "by theta for min. MAE")+
-  scale_color_fermenter(type = "seq", palette = "PuOr", name = "Month")+
+  scale_color_brewer(type = "seq", palette = "PuOr", name = "Month")+
   theme(legend.position = "bottom")
 coef_precip_max_tp_17
 

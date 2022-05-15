@@ -1,6 +1,6 @@
 
 
-coef_fun<-function(df_N, df, theta, cols, target, max_tp, via = c("smap","block_lnlp"), cutoff){
+coef_fun<-function(df_N, df, theta, cols, target, max_tp, via = c("smap","block_lnlp"), cutoff, Embed){
   
   ## Organizing dataset parsed
   df_N<-df_N %>% 
@@ -14,6 +14,11 @@ coef_fun<-function(df_N, df, theta, cols, target, max_tp, via = c("smap","block_
     via<-"smap"
   }
   
+  if(missing(Embed)){
+    warning("Embedding for SMap to the number of Cols in df_N")
+    Embed<-ncol(df_N)
+  }
+  
   if(via == "smap"){
     
     df_N<-df_N |> 
@@ -23,7 +28,7 @@ coef_fun<-function(df_N, df, theta, cols, target, max_tp, via = c("smap","block_
     lib<-pred<-c(1,nrow(df_N))
     
     coef_series_opt<-SMap(dataFrame = df_N, 
-                              E = ncol(df_N), 
+                              E = Embed, 
                               theta = theta,
                               embedded = T,
                               lib = lib, 

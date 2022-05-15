@@ -18,12 +18,12 @@ source("Scripts/functions/coef_smap.R")
 dengue_t2m_rio<-vroom('Data/dengue_t2m_precip_weelky_rj.csv.xz')
 
 tp<-17
-more_col<-"temp_min"
+# more_col<-"temp_min"
 
 theta_find<-vroom(paste0("Outputs/Tables/rj/yealry_shuffle_tp_", 
                          tp,
-                         "_add_", 
-                         more_col,
+                         # "_add_", 
+                         # more_col,
                          "_theta_mae_rmse.csv.xz"))
 
 min_mae<-theta_find$mae[which.min(theta_find$mae)]
@@ -50,8 +50,8 @@ theta_min_plot
 
 ggsave(filename = paste0('Outputs/Plots/rj/yearly_shuffle_tp_', 
                          tp,
-                         "_add_", 
-                         more_col,
+                         # "_add_", 
+                         # more_col,
                          '_theta_min_mae_rmse.png'), 
        width = 11, 
        height = 9, 
@@ -65,13 +65,13 @@ series_cutted<-list()
 
 series_cutted$Norm_block<-vroom(paste0("Outputs/Tables/rj/normlized_series_cut_tp_", 
                                        tp,
-                                       "_add_", 
-                                       more_col,
+                                       # "_add_", 
+                                       # more_col,
                                        ".csv.xz"))
 series_cutted$Series<-vroom(paste0("Outputs/Tables/rj/series_cut_tp_", 
                                    tp, 
-                                   "_add_", 
-                                   more_col,
+                                   # "_add_", 
+                                   # more_col,
                                    ".csv.xz"))
 
 names_smap<-colnames(series_cutted$Norm_block)[-1]
