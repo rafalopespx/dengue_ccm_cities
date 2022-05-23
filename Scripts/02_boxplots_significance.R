@@ -15,6 +15,7 @@ source("Scripts/CCM_functions_pipeline/CCMSplines.R")
 source("Scripts/CCM_functions_pipeline/make_pred_nozero.R")
 
 boxplot_files<-list.files(path = "Outputs/Tables/rj/", pattern = "yearly_shuffle_Boxplot_tp=", full.names = T)
+tp_vec<--c(0:17)
 max_tp_vec<-max(tp_vec)
 path<-"yearly_shuffle"
 

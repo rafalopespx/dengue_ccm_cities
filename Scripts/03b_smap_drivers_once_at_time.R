@@ -33,7 +33,7 @@ dengue_embed<-Embed(dataFrame = dengue_t2m_rio, E = maxE, columns = "Cases", tau
 dengue_t2m_rio<-data.frame(dengue_t2m_rio, dengue_embed[,-1])
 
 tp<-17
-more_col<-"cases"
+more_col<-"precip_max_once"
 
 driver_surr<-vroom(paste0('Outputs/Tables/rj/yearly_shuffle_', tp,'_driver_surr.csv.xz')) %>% 
   filter(sig == T) %>% 
@@ -44,9 +44,22 @@ driver_surr<-vroom(paste0('Outputs/Tables/rj/yearly_shuffle_', tp,'_driver_surr.
                             driver == "Max. Precipitation" ~ "total_precip_max", 
                             driver == "Min. Precipitation" ~ "total_precip_min"))
 
-series_cutted<-ccm_coef_cutter(driver_data = driver_surr, 
+## Selecting from the driver data, only significant for the original time series, 
+lag_select<-driver_surr %>% 
+  filter(sig == T)%>% 
+  select(tp, rho, driver)%>%
+  group_by(driver) %>% 
+  arrange(desc(rho)) %>% 
+  slice(1) %>% 
+  ungroup() %>% 
+  mutate(tp_abs = abs(tp))
+
+driver_once<-driver_surr |> 
+  filter(driver == "total_precip_max")
+
+series_cutted<-ccm_coef_cutter(driver_data = driver_once, 
                                original = dengue_t2m_rio, 
-                               add_col = c("Casest1", "Casest2"),
+                               add_col = c("Casest1", "Casest2", "Casest3"),
                                K = 0)
 names_smap<-colnames(series_cutted$Norm_block)[-1]
 
@@ -56,16 +69,12 @@ vroom_write(series_cutted$Norm_block,
                           tp, 
                           "_add_", 
                           more_col, 
-                          # "_tau_",
-                          # 26,
                           ".csv.xz"))
 vroom_write(series_cutted$Series, 
             file = paste0("Outputs/Tables/rj/series_cut_tp_", 
                           tp, 
                           "_add_", 
                           more_col, 
-                          # "_tau_",
-                          # 26,
                           ".csv.xz"))
 
 theta_vec<-seq(.1,10, by = .1)
@@ -81,7 +90,7 @@ for (i in 1:length(theta_vec)) {
                           columns = names_smap,
                           target_column = 'cases',
                           method = 's-map',
-                          tp = 0, 
+                          tp = 0,
                           save_smap_coefficients = T)
   
   coef_matrix[[i]]<-coef_series$smap_coefficients[[1]]

@@ -78,9 +78,20 @@ names_smap<-colnames(series_cutted$Norm_block)[-1]
 max_tp<-max(parse_number(names_smap))
 length_rj<-nrow(dengue_t2m_rio)
 
+maxE<-EmbedDimension(dataFrame = dengue_t2m_rio, 
+                     lib = "1 523", 
+                     pred = "1 523", 
+                     maxE = 20, 
+                     target = "Cases",
+                     columns = "Cases",
+                     showPlot = T)
+
+maxE<-maxE[which.max(maxE$rho),]$E
+
 drivers_coef_opt_mae<-coef_fun(df_N = series_cutted$Norm_block, 
                               df = series_cutted$Series, 
                               theta = theta_min_mae, 
+                              Embed = 5,
                               cols = names_smap, 
                               target = 'cases', 
                               max_tp = max_tp, 
@@ -91,9 +102,9 @@ drivers_coef_opt_mae<-coef_fun(df_N = series_cutted$Norm_block,
 vroom_write(drivers_coef_opt_mae, 
             file = paste0('Outputs/Tables/rj/yearly_shuffle_drivers_tp_', 
                           tp,
-                          "_add_", 
-                          more_col,
-                          '_coef_opt_theta_mae.csv.xz'))
+                          # "_add_", 
+                          # more_col,
+                          '_coef_opt_theta_mae_smap.csv.xz'))
 
 # drivers_coef_opt_rmse<-coef_fun(df_N = series_cutted$Norm_block, 
 #                                 df = series_cutted$Series, 

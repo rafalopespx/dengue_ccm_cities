@@ -334,107 +334,14 @@ If $\theta$ is $0$ or close to $0$ the model understand the influence of each dr
 
 ## S-Map
 
-We test four different S-Map models, every one of each follows the same procedure, put the drivers, finds a minimum for the $\theta$ and find the forces of interactions:
+The Model we are considering is $tp$ until the first 0 of the ACf for the Cases time series, $tp$ max is 17 weeks, model for the S-Map: 
 
- - Models until 52 weeks of lags
-    * (Model I) S-Map for 
-    $\langle Cases(t), Precip_{max}(t-49), \\Precip_{min}(t-25), Precip_{mean}(t-49)\rangle$
-    * (Model II) S-Map for 
-    $\langle Cases(t), Precip_{max}(t-49), \\Precip_{min}(t-25), Precip_{mean}(t-49), Temp_{min}(t)\rangle$
-
----
-
-## S-Map
-
-Models when only considering $tp$ until the first 0 of the ACf for the Cases time series, $tp$ max is 17 weeks:
-
-- Models until 17 weeks:
-    * (Model III) S-Map for 
-    $\langle Cases(t), Precip_{max}(t-2), Precip_{min}(t-7))\rangle$
-    * (Model IV) S-Map for 
-    $\langle Cases(t), Precip_{max}(t-2), \\Precip_{min}(t-7), Temp_{min}(t)\rangle$
-
----
-
-class: middle, center
-
-Model I
-
-$$\langle Cases(t), Precip_{max}(t-49), Precip_{min}(t-25), Precip_{mean}(t-49)\rangle$$
-
----
-
-```{r theta-modelI, echo=FALSE, message=FALSE, warning=FALSE, out.width=750, fig.align='center'}
-knitr::include_graphics('img_v6/yearly_shuffle_tp_52_theta_min_mae_rmse.png')
-```
-
----
-
-## Theta choice
-
-With the value of theta for the minimum on MAE, we can ow estimate the forces of interaction, $C_i(t)$ for each drivers ( $Precip_{min}$, $Precip_{max}$, $Precip_{mean}$ ) on the the effect:
-
-$$
-\begin{eqnarray}
-Cases(t) &=& C_0(t) + \frac{\partial Cases(t)}{\partial Precip_{min}(t - 25)}Precip_{min}(t - 25) \\
-&+& \frac{\partial Cases(t)}{\partial Precip_{max}(t - 49)}Precip_{max}(t - 49) \\
-&+& \frac{\partial Cases(t)}{\partial Precip_{mean}(t - 49)}Precip_{mean}(t - 49)
-\end{eqnarray}
-$$
-
----
-
-```{r forces-modelI, echo=FALSE, message=FALSE, warning=FALSE, out.width=750, fig.align='center'}
-knitr::include_graphics('img_v6/patchwork_coef_precip_tp_52.png')
-```
-
----
-
-class: middle, center
-
-Model II
-
-$$\langle Cases(t), Precip_{max}(t-49), Precip_{min}(t-25),\\Precip_{mean}(t-49), Temp_{min}(t)\rangle$$
-
----
-
-```{r theta-modelII, echo=FALSE, message=FALSE, warning=FALSE, out.width=750, fig.align='center'}
-knitr::include_graphics('img_v6/yearly_shuffle_tp_52_add_temp_min_theta_min_mae_rmse.png')
-```
-
----
-
-## Theta choice
-
-With the value of theta for the minimum on MAE, we can ow estimate the forces of interaction, $C_i(t)$ for each drivers ( $Precip_{min}$, $Precip_{max}$, $Precip_{mean}$, $Temp_{min}$ ) on the the effect:
-
-$$
-\begin{eqnarray}
-Cases(t) &=& C_0(t) + \frac{\partial Cases(t)}{\partial Precip_{min}(t - 25)}Precip_{min}(t - 25) \\
-&+& \frac{\partial Cases(t)}{\partial Precip_{max}(t - 49)}Precip_{max}(t - 49) \\
-&+& \frac{\partial Cases(t)}{\partial Precip_{mean}(t - 49)}Precip_{mean}(t - 49) \\ 
-&+& \frac{\partial Cases(t)}{\partial Temp_{min}(t)}Temp_{min}(t)
-\end{eqnarray}
-$$
-
----
-
-```{r forces-modelII, echo=FALSE, message=FALSE, warning=FALSE, out.width=750, fig.align='center'}
-knitr::include_graphics('img_v6/patchwork_coef_precip_tp_52_add_tmin.png')
-```
-
----
-
-class: middle, center
-
-Model III
-
-$$\langle Cases(t), Precip_{max}(t-2), Precip_{min}(t-7))\rangle$$
+$$\langle Cases(t), Cases(t - 1), Cases(t - 2), Precip_{max}(t-2), Precip_{min}(t-7))\rangle$$
 
 ---
 
 ```{r theta-modelIII, echo=FALSE, message=FALSE, warning=FALSE, out.width=750, fig.align='center'}
-knitr::include_graphics('img_v6/yearly_shuffle_tp_17_theta_min_mae_rmse.png')
+knitr::include_graphics('img_v7/yearly_shuffle_tp_17_add_cases_theta_min_mae_rmse.png')
 ```
 
 ---
@@ -445,58 +352,17 @@ With the value of theta for the minimum on MAE, we can ow estimate the forces of
 
 $$
 \begin{eqnarray}
-Cases(t) &=& C_0(t) + \frac{\partial Cases(t)}{\partial Precip_{max}(t - 2)}Precip_{max}(t - 2) \\
+Cases(t) &=& C_0(t) + \frac{\partial Cases(t)}{\partial Cases(t-1)} + \frac{\partial Cases(t)}{\partial Cases(t-2)} \\
+&+& \frac{\partial Cases(t)}{\partial Precip_{max}(t - 2)}Precip_{max}(t - 2) \\
 &+& \frac{\partial Cases(t)}{\partial Precip_{min}(t - 7)}Precip_{min}(t - 7)
 \end{eqnarray}
 $$
 
 ---
 
-```{r forces-modelIII, echo=FALSE, message=FALSE, warning=FALSE, out.width=750, fig.align='center'}
-knitr::include_graphics('img_v6/patchwork_coef_precip_tp_17.png')
+```{r forces-modelIII, echo=FALSE, message=FALSE, warning=FALSE, out.width=800, fig.align='center'}
+knitr::include_graphics('img_v7/patchwork_coef_precips_tp_17.png')
 ```
-
----
-
-class: middle, center
-
-Model IV
-
-$$\langle Cases(t), Precip_{max}(t-2), Precip_{min}(t-7), Temp_{min}(t)\rangle$$
-
----
-
-```{r theta-modelIV, echo=FALSE, message=FALSE, warning=FALSE, out.width=750, fig.align='center'}
-knitr::include_graphics('img_v6/yearly_shuffle_tp_17_add_temp_min_theta_min_mae_rmse.png')
-```
-
----
-
-## Theta choice
-
-With the value of theta for the minimum on MAE, we can ow estimate the forces of interaction, $C_i(t)$ for each drivers ( $Precip_{min}$, $Precip_{max}$, $Temp_{min}$ ) on the the effect:
-
-$$
-\begin{eqnarray}
-Cases(t) &=& C_0(t) + \frac{\partial Cases(t)}{\partial Precip_{min}(t - 2)}Precip_{min}(t - 2) \\
-&+& \frac{\partial Cases(t)}{\partial Precip_{max}(t - 7)}Precip_{max}(t - 7) \\
-&+& \frac{\partial Cases(t)}{\partial Temp_{min}(t)}Temp_{min}(t) \\
-\end{eqnarray}
-$$
-
----
-
-```{r forces-modelIV, echo=FALSE, message=FALSE, warning=FALSE, out.width=750, fig.align='center'}
-knitr::include_graphics('img_v6/patchwork_coef_precip_tp_17_add_tmin.png')
-```
-
----
-
-## Decisions to make
-
- * Choose maximum $tp$ to be tested, the only justified is 17 weeks by the ACF of cases
- * Choose if the S-Map includes temperature variables and which? $Temp_{min}$ has the highest $\rho$
- * Interpretation of the results, First attempt next slide
 
 ---
 

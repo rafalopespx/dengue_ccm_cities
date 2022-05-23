@@ -81,6 +81,9 @@ surr_2_df<-Surr_2 |>
 vroom_write(surr_2_df, file = "Outputs/Tables/rj/surrogates_time_series_years_shuffle.csv.xz")
 
 
+## Loading surrogates df
+surr_2_df<-vroom("Outputs/Tables/rj/surrogates_time_series_years_shuffle.csv.xz")
+
 boxplot_fun<-function(x, var){
   x |> 
     ggplot()+
@@ -91,7 +94,8 @@ boxplot_fun<-function(x, var){
     theme_minimal()+
     scale_x_date(date_breaks = "3 months", date_labels = "%V/%y")+
     theme(axis.text.x = element_text(angle = 90))+
-    theme(legend.position = "bottom", legend.title = element_blank())
+    theme(legend.position = "bottom", legend.title = element_blank())+
+    scale_color_manual(values = c("Black", "grey60"))
 }
 
 ## Temperature Boxplot 
@@ -115,7 +119,6 @@ patch_temp<-(temp_mean_boxplot / temp_max_boxplot / temp_min_boxplot)+
   plot_layout(guides = 'collect')&
   theme(legend.position = "bottom")
 patch_temp
-
 
 ggsave(plot = patch_temp, 
        filename = 'Outputs/Plots/rj/patch_surrogates_temp_year_shuffle.png', 
@@ -155,7 +158,7 @@ ggsave(plot = patch_precip,
 ## Final Patch
 patch_final<-(temp_mean_boxplot / temp_max_boxplot / temp_min_boxplot |
   total_mean_precip_boxplot / total_max_precip_boxplot / total_min_precip_boxplot)+
-  plot_annotation(tag_levels = 'a', title = "Yearly Shuffle")+
+  plot_annotation(tag_levels = 'a', title = "Shuffle by years")+
   plot_layout(guides = 'collect')&
   theme(legend.position = "bottom")
 patch_final

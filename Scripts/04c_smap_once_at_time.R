@@ -17,7 +17,7 @@ source("Scripts/CCM_functions_pipeline/make_pred_nozero.R")
 dengue_t2m_rio<-vroom('Data/dengue_t2m_precip_weelky_rj.csv.xz')
 
 tp<-17
-more_col<-"cases"
+more_col<-"precip_min_once_add_tmin"
 
 theta_find<-vroom(paste0("Outputs/Tables/rj/yealry_shuffle_tp_", 
                          tp,
@@ -27,8 +27,6 @@ theta_find<-vroom(paste0("Outputs/Tables/rj/yealry_shuffle_tp_",
 
 min_mae<-theta_find$mae[which.min(theta_find$mae)]
 theta_min_mae<-theta_find$theta[which.min(theta_find$mae)]
-# min_rmse<-theta_find$rmse[which.min(theta_find$rmse)]
-# theta_min_rmse<-theta_find$theta[which.min(theta_find$rmse)]
 
 theta_min_plot<-theta_find %>% 
   ggplot(aes(x = theta, y = mae, col = "MAE"))+
@@ -77,7 +75,7 @@ series_cutted$Series<-vroom(paste0("Outputs/Tables/rj/series_cut_tp_",
                                    ".csv.xz"))
 
 names_smap<-colnames(series_cutted$Norm_block)[-1]
-max_tp<-max(parse_number(names_smap))
+max_tp<-7
 length_rj<-nrow(dengue_t2m_rio)
 
 coef_fun<-function(df_N, df, theta, cols, target, max_tp){
@@ -108,12 +106,12 @@ coef_fun<-function(df_N, df, theta, cols, target, max_tp){
 }
 
 coef_series_opt_mae<-block_lnlp(series_cutted$Norm_block,
-                            theta=theta_opt_mae, ## Finding Theta
-                            columns = names_smap,
-                            target_column = 'cases',
-                            method = 's-map',
-                            tp = 0, 
-                            save_smap_coefficients = T)
+                                theta=theta_opt_mae, ## Finding Theta
+                                columns = names_smap,
+                                target_column = 'cases',
+                                method = 's-map',
+                                tp = 0, 
+                                save_smap_coefficients = T)
 
 series_cutted$Norm_block<-series_cutted$Norm_block |> 
   mutate(index = row_number()) |> 

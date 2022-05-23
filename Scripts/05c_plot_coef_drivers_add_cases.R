@@ -10,84 +10,136 @@ if(!require(vroom)){install.packages("vroom"); library(vroom)}
 if(!require(rEDM)){install.packages("rEDM"); library(rEDM)}
 if(!require(ggExtra)){install.packages("ggExtra"); library(ggExtra)}
 if(!require(patchwork)){install.packages("patchwork"); library(patchwork)}
+if(!require(colorspace)){install.packages("colorspace"); library(colorspace)}
+if(!require(viridis)){install.packages("viridis"); library(viridis)}
 
-# more_col<-"temp_min"
+more_col<-"cases"
 
 ## Laoding drivers optimal csv
-drivers_coef_opt_52<-vroom(paste0("Outputs/Tables/rj/yearly_shuffle_drivers_tp_", 
-                                  52,
-                                  # "_add_", 
-                                  # more_col, 
-                                  "_coef_opt_theta_mae.csv.xz"))
+# drivers_coef_opt_52<-vroom(paste0("Outputs/Tables/rj/yearly_shuffle_drivers_tp_", 
+#                                   52,
+#                                   "_add_",
+#                                   more_col,
+#                                   "_coef_opt_theta_mae.csv.xz"))
 
 drivers_coef_opt_17<-vroom(paste0("Outputs/Tables/rj/yearly_shuffle_drivers_tp_", 
                                   17,
-                                  # "_add_", 
-                                  # more_col,
+                                  "_add_",
+                                  more_col,
                                   "_coef_opt_theta_mae.csv.xz"))
 
-coef_plot<-function(x, xvar, yvar, colors = NULL){
+rj_drivers<-vroom("Data/dengue_t2m_precip_weelky_rj.csv.xz") |> 
+  select(week, temp_mean, temp_max, temp_min, total_precip_mean, total_precip_max, total_precip_min) |> 
+  rename(date = week)
+
+drivers_coef_opt_17<-drivers_coef_opt_17 |> 
+  left_join(rj_drivers) |> 
+  mutate(month = factor(month(date, label = T, abbr = T)))
+
+# drivers_coef_opt_52<-drivers_coef_opt_52 |> 
+#   left_join(rj_drivers)
+
+
+coef_plot<-function(x, xvar, yvar, colors = NULL, size = NULL){
   x %>% 
-    ggplot(aes(x = {{xvar}}, y = {{yvar}}, col = {{colors}}))+
+    ggplot(aes(x = {{xvar}}, y = {{yvar}}, 
+               col = {{colors}}, 
+               size = {{size}}))+
     geom_point()+
     geom_rug(sides = "b")+
     theme_bw()
 }
+
+paleta_cores<-c(rev(viridis(6)), viridis(6))
 
 ## Coefficients
 ## Until 17 weeks
 coef_precip_max_tp_17<-drivers_coef_opt_17 |> 
   coef_plot(xvar = total_precip_max2, 
             yvar = `∂total_precip_max2/∂cases`, 
-            colors = quarter(date, with_year = F))+
-  labs(x = "Maximum Preicipitation, lagged 2 weeks", 
-       title = "Effects of Maximum Precipitation on Cases", 
-       subtitle = "by theta for min. MAE")+
-  scale_color_fermenter(type = "seq", palette = "PuOr", name = "Month")+
-  theme(legend.position = "bottom")
+            colors = month)+
+  scale_color_manual(values = paleta_cores, name = "Month")+
+  theme(legend.position = "bottom")+
+  labs(title = "Effects of Maximum Precipitation on Cases", 
+       subtitle = "by theta for min. MAE",
+       y = expression(paste("dCases/dPrecip"[max]," (t - 2)")), 
+       x = expression(paste("Precip"[max],"(t - 2)")))+
+  guides()
 coef_precip_max_tp_17
 
-ggsave(filename = "Outputs/Plots/rj/coef_precip_max_tp_17_add_tmin.png", 
+ggsave(filename = paste0("Outputs/Plots/rj/coef_precip_max_tp_17", 
+                         "_add_",
+                         more_col,
+                         ".png"), 
        plot = coef_precip_max_tp_17, 
-       width = 9, 
-       height = 7, 
+       width = 11, 
+       height = 9, 
        dpi = 300)
 
 coef_precip_min_tp_17<-drivers_coef_opt_17 |> 
   coef_plot(xvar = total_precip_min7, 
             yvar = `∂total_precip_min7/∂cases`, 
-            colors = month(date - 7))+
-  labs(x = "Minimum Preicipitation, lagged 7 weeks", 
-       title = "Effects of Minimum Precipitation on Cases", 
+            colors = month)+
+  labs(title = "Effects of Minimum Precipitation on Cases", 
        subtitle = "by theta for min. MAE")+
-  scale_color_fermenter(type = "seq", palette = "PuOr", name = "Month")+
-  theme(legend.position = "bottom")
+  scale_color_manual(values = paleta_cores, name = "Month")+
+  theme(legend.position = "bottom")+
+  labs(y = expression(paste(d,"Cases","/",d,"Precip"[min]," (t - 7)")), 
+       x = expression(paste("Precip"[min], "(t - 7)")))
 coef_precip_min_tp_17
 
-ggsave(filename = "Outputs/Plots/rj/coef_precip_min_tp_17_add_tmin.png", 
+ggsave(filename = paste0("Outputs/Plots/rj/coef_precip_min_tp_17", 
+                         "_add_",
+                         more_col,
+                         ".png"), 
        plot = coef_precip_min_tp_17, 
-       width = 9, 
-       height = 7, 
+       width =11, 
+       height = 9, 
        dpi = 300)
 
-coef_tmin_tp_17<-drivers_coef_opt_17 |> 
-  coef_plot(xvar = temp_min0, 
-            yvar = `∂temp_min0/∂cases`, 
-            colors = month(date))+
-  labs(x = "Minimum Temperature, no lag", 
-       title = "Effects of Minimum Temperature on Cases", 
+coef_add_tp_17<-drivers_coef_opt_17 |> 
+  coef_plot(xvar = Casest1, 
+            yvar = `∂Casest1/∂cases`, 
+            colors = month)+
+  labs(title = "Effects of Cases lagged 1 week on Cases", 
        subtitle = "by theta for min. MAE")+
-  scale_color_fermenter(type = "seq", palette = "PuOr", name = "Month")+
-  theme(legend.position = "bottom")
-coef_tmin_tp_17
+  scale_color_manual(values = paleta_cores, name = "Month")+
+  theme(legend.position = "bottom")+
+  labs(y = expression(paste(d,"Cases","/",d,"Cases (t - 1)")), 
+       x = expression(paste("Cases (t - 1)")))
+coef_add_tp_17
 
-ggsave(filename = "Outputs/Plots/rj/coef_tmin_tp_17_add_tmin.png", 
-       plot = coef_tmin_tp_17, 
-       width = 9, 
-       height = 7, 
+ggsave(filename = paste0("Outputs/Plots/rj/coef_casest1_tp_17", 
+                         "_add_",
+                         more_col,
+                         ".png"), 
+       plot = coef_add_tp_17, 
+       width =11, 
+       height = 9, 
        dpi = 300)
 
-patch_precip_tp_17<-(coef_precip_max_tp_17)| ( coef_precip_min_tp_17 / coef_tmin_tp_17)+
+coef_add_tp_17_2<-drivers_coef_opt_17 |> 
+  coef_plot(xvar = Casest2, 
+            yvar = `∂Casest2/∂cases`, 
+            colors = month)+
+  labs(title = "Effects of Cases lagged 2 weeks on Cases", 
+       subtitle = "by theta for min. MAE")+
+  scale_color_manual(values = paleta_cores, name = "Month")+
+  theme(legend.position = "bottom")+
+  labs(y = expression(paste(d,"Cases","/",d," Cases (t - 2)")), 
+       x = expression(paste("Cases (t - 2)")))
+coef_add_tp_17_2
+
+ggsave(filename = paste0("Outputs/Plots/rj/coef_casest2_tp_17", 
+                         "_add_",
+                         more_col,
+                         ".png"), 
+       plot = coef_add_tp_17_2, 
+       width = 11, 
+       height = 9, 
+       dpi = 300)
+
+patch_precip_tp_17<-(coef_precip_max_tp_17 |  coef_precip_min_tp_17)+
   plot_layout(guides = "collect")+
   plot_annotation(title = "Force of Interaction", 
                   tag_levels = "a", 
@@ -95,10 +147,24 @@ patch_precip_tp_17<-(coef_precip_max_tp_17)| ( coef_precip_min_tp_17 / coef_tmin
   theme(legend.position = "bottom")
 patch_precip_tp_17
 
-ggsave(filename = "Outputs/Plots/rj/patchwork_coef_precip_tp_17_add_tmin.png",
+ggsave(filename = paste0("Outputs/Plots/rj/patchwork_coef_precips_tp_17.png"),
        plot = patch_precip_tp_17, 
-       width = 9, 
-       height = 7, 
+       width =11, 
+       height = 9, 
+       dpi = 300)
+
+patch_all_tp_17<-(coef_precip_max_tp_17 | coef_precip_min_tp_17)/(coef_add_tp_17 | coef_add_tp_17_2)+
+  plot_layout(guides = "collect")+
+  plot_annotation(title = "Force of Interaction", 
+                  tag_levels = "a", 
+                  theme = theme_classic())&
+  theme(legend.position = "bottom")
+patch_all_tp_17
+
+ggsave(filename = paste0("Outputs/Plots/rj/patchwork_coef_all_tp_17.png"),
+       plot = patch_all_tp_17, 
+       width = 11, 
+       height = 9, 
        dpi = 300)
 
 ## Until 52 weeks

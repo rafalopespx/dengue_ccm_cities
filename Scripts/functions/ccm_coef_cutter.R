@@ -14,7 +14,7 @@ lag_select<-driver_data %>%
 if(missing(add_col)){
   drivers_amount<-length(unique(lag_select$driver))
 } else {
-  drivers_amount<-length(unique(lag_select$driver))+1L
+  drivers_amount<-length(unique(lag_select$driver))+length(add_col)
 }
 
 length_rj<-nrow(original)
@@ -35,9 +35,14 @@ if(!missing(add_col)){
   added_column<-original |> 
     select(all_of(add_col)) |> 
     slice((max_tp+1):(length_rj - max_tp)) |> 
-    setNames(c("added_col"))
+    setNames(str_c("added_col", 1:length(add_col)))
   
-  series_cut[,(drivers_amount+1)]<-added_column$added_col
+  drivers_select<-length(unique(lag_select$driver))
+  
+  for (i in  1:ncol(added_column)) {
+    series_cut[,(drivers_select+1+i)]<-added_column[,i]
+  }
+  
 }
 
 names_driver<-lag_select$driver
@@ -70,7 +75,7 @@ names_lag<-str_c(lag_select$driver, lag_select$tp_abs-K)
 if(missing(add_col)){
   colnames(series_cut)<-c('cases', names_lag)
 }else{
-  colnames(series_cut)<-c('cases', names_lag, str_c({{add_col}},0))
+  colnames(series_cut)<-c('cases', names_lag, {{add_col}})
 }
 
 series_cut<-as.data.frame(series_cut)

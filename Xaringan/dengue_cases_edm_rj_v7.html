@@ -4,7 +4,7 @@
     <title>Dengue Cases and Climatic drivers on Rio de Janeiro city</title>
     <meta charset="utf-8" />
     <meta name="author" content="Rafael Lopes Paixão da Silva" />
-    <meta name="date" content="2022-05-20" />
+    <meta name="date" content="2022-05-22" />
     <script src="libs/header-attrs/header-attrs.js"></script>
     <link href="libs/xaringanExtra-extra-styles/xaringanExtra-extra-styles.css" rel="stylesheet" />
     <link rel="stylesheet" href="xaringan-themer.css" type="text/css" />
@@ -23,7 +23,7 @@ class: center, middle, inverse, title-slide
 ### IFT, Unesp
 ]
 .date[
-### 2022-05-20
+### 2022-05-22
 ]
 
 ---
@@ -297,96 +297,13 @@ If `\(\theta\)` is `\(0\)` or close to `\(0\)` the model understand the influenc
 
 ## S-Map
 
-We test four different S-Map models, every one of each follows the same procedure, put the drivers, finds a minimum for the `\(\theta\)` and find the forces of interactions:
+The Model we are considering is `\(tp\)` until the first 0 of the ACf for the Cases time series, `\(tp\)` max is 17 weeks, model for the S-Map: 
 
- - Models until 52 weeks of lags
-    * (Model I) S-Map for 
-    `\(\langle Cases(t), Precip_{max}(t-49), \\Precip_{min}(t-25), Precip_{mean}(t-49)\rangle\)`
-    * (Model II) S-Map for 
-    `\(\langle Cases(t), Precip_{max}(t-49), \\Precip_{min}(t-25), Precip_{mean}(t-49), Temp_{min}(t)\rangle\)`
+`$$\langle Cases(t), Cases(t - 1), Cases(t - 2), Precip_{max}(t-2), Precip_{min}(t-7))\rangle$$`
 
 ---
 
-## S-Map
-
-- Models until 17 weeks (First 0 of ACF of Cases time series) of lags
-    * (Model III) S-Map for 
-    `\(\langle Cases(t), Precip_{max}(t-2), Precip_{min}(t-7))\rangle\)`
-    * (Model IV) S-Map for 
-    `\(\langle Cases(t), Precip_{max}(t-2), \\Precip_{min}(t-7), Temp_{min}(t)\rangle\)`
-
----
-
-class: middle, center
-
-Model I
-
-`$$\langle Cases(t), Precip_{max}(t-49), Precip_{min}(t-25), Precip_{mean}(t-49)\rangle$$`
-
----
-
-&lt;img src="img_v6/yearly_shuffle_tp_52_theta_min_mae_rmse.png" width="750" style="display: block; margin: auto;" /&gt;
-
----
-
-## Theta choice
-
-With the value of theta for the minimum on MAE, we can ow estimate the forces of interaction, `\(C_i(t)\)` for each drivers ( `\(Precip_{min}\)`, `\(Precip_{max}\)`, `\(Precip_{mean}\)` ) on the the effect:
-
-$$
-`\begin{eqnarray}
-Cases(t) &amp;=&amp; C_0(t) + \frac{\partial Cases(t)}{\partial Precip_{min}(t - 25)}Precip_{min}(t - 25) \\
-&amp;+&amp; \frac{\partial Cases(t)}{\partial Precip_{max}(t - 49)}Precip_{max}(t - 49) \\
-&amp;+&amp; \frac{\partial Cases(t)}{\partial Precip_{mean}(t - 49)}Precip_{mean}(t - 49)
-\end{eqnarray}`
-$$
-
----
-
-&lt;img src="img_v6/patchwork_coef_precip_tp_52.png" width="750" style="display: block; margin: auto;" /&gt;
-
----
-
-class: middle, center
-
-Model II
-
-`$$\langle Cases(t), Precip_{max}(t-49), Precip_{min}(t-25),\\Precip_{mean}(t-49), Temp_{min}(t)\rangle$$`
-
----
-
-&lt;img src="img_v6/yearly_shuffle_tp_52_add_temp_min_theta_min_mae_rmse.png" width="750" style="display: block; margin: auto;" /&gt;
-
----
-
-## Theta choice
-
-With the value of theta for the minimum on MAE, we can ow estimate the forces of interaction, `\(C_i(t)\)` for each drivers ( `\(Precip_{min}\)`, `\(Precip_{max}\)`, `\(Precip_{mean}\)`, `\(Temp_{min}\)` ) on the the effect:
-
-$$
-`\begin{eqnarray}
-Cases(t) &amp;=&amp; C_0(t) + \frac{\partial Cases(t)}{\partial Precip_{min}(t - 25)}Precip_{min}(t - 25) \\
-&amp;+&amp; \frac{\partial Cases(t)}{\partial Precip_{max}(t - 49)}Precip_{max}(t - 49) \\
-&amp;+&amp; \frac{\partial Cases(t)}{\partial Precip_{mean}(t - 49)}Precip_{mean}(t - 49) \\ 
-&amp;+&amp; \frac{\partial Cases(t)}{\partial Temp_{min}(t)}Temp_{min}(t)
-\end{eqnarray}`
-$$
-
----
-
-&lt;img src="img_v6/patchwork_coef_precip_tp_52_add_tmin.png" width="750" style="display: block; margin: auto;" /&gt;
-
----
-
-class: middle, center
-
-Model III
-
-`$$\langle Cases(t), Precip_{max}(t-2), Precip_{min}(t-7))\rangle$$`
-
----
-
-&lt;img src="img_v6/yearly_shuffle_tp_17_theta_min_mae_rmse.png" width="750" style="display: block; margin: auto;" /&gt;
+&lt;img src="img_v7/yearly_shuffle_tp_17_add_cases_theta_min_mae_rmse.png" width="750" style="display: block; margin: auto;" /&gt;
 
 ---
 
@@ -396,52 +313,15 @@ With the value of theta for the minimum on MAE, we can ow estimate the forces of
 
 $$
 `\begin{eqnarray}
-Cases(t) &amp;=&amp; C_0(t) + \frac{\partial Cases(t)}{\partial Precip_{max}(t - 2)}Precip_{max}(t - 2) \\
+Cases(t) &amp;=&amp; C_0(t) + \frac{\partial Cases(t)}{\partial Cases(t-1)} + \frac{\partial Cases(t)}{\partial Cases(t-2)} \\
+&amp;+&amp; \frac{\partial Cases(t)}{\partial Precip_{max}(t - 2)}Precip_{max}(t - 2) \\
 &amp;+&amp; \frac{\partial Cases(t)}{\partial Precip_{min}(t - 7)}Precip_{min}(t - 7)
 \end{eqnarray}`
 $$
 
 ---
 
-&lt;img src="img_v6/patchwork_coef_precip_tp_17.png" width="750" style="display: block; margin: auto;" /&gt;
-
----
-
-class: middle, center
-
-Model IV
-
-`$$\langle Cases(t), Precip_{max}(t-2), Precip_{min}(t-7), Temp_{min}(t)\rangle$$`
-
----
-
-&lt;img src="img_v6/yearly_shuffle_tp_17_add_temp_min_theta_min_mae_rmse.png" width="750" style="display: block; margin: auto;" /&gt;
-
----
-
-## Theta choice
-
-With the value of theta for the minimum on MAE, we can ow estimate the forces of interaction, `\(C_i(t)\)` for each drivers ( `\(Precip_{min}\)`, `\(Precip_{max}\)`, `\(Temp_{min}\)` ) on the the effect:
-
-$$
-`\begin{eqnarray}
-Cases(t) &amp;=&amp; C_0(t) + \frac{\partial Cases(t)}{\partial Precip_{min}(t - 2)}Precip_{min}(t - 2) \\
-&amp;+&amp; \frac{\partial Cases(t)}{\partial Precip_{max}(t - 7)}Precip_{max}(t - 7) \\
-&amp;+&amp; \frac{\partial Cases(t)}{\partial Temp_{min}(t)}Temp_{min}(t) \\
-\end{eqnarray}`
-$$
-
----
-
-&lt;img src="img_v6/patchwork_coef_precip_tp_17_add_tmin.png" width="750" style="display: block; margin: auto;" /&gt;
-
----
-
-## Decisions to make
-
- * Choose maximum `\(tp\)` to be tested, the only justified is 17 weeks by the ACF of cases
- * Choose if the S-Map includes temperature variables and which? `\(Temp_{min}\)` has the highest `\(\rho\)`
- * Interpretation of the results, First attempt next slide
+&lt;img src="img_v7/patchwork_coef_precips_tp_17.png" width="800" style="display: block; margin: auto;" /&gt;
 
 ---
 
